@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="action_settings">Settings</string>
+    <string name="logoff">注销</string>
+    <string name="logout">退出</string>
+    <string name="login">登录</string>
+    <string name="password">密 码：</string>
+    <string name="username">账 号：</string>
+    <string name="mycard">我的校园卡</string>
+    <string name="searchcard">校园卡丢失查询</string>
+    <string name="myclass">我的课表</string>
+    <string name="mysetting">设置</string>
+</resources>

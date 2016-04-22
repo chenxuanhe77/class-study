@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/id_mycard"
+            android:icon="@android:drawable/ic_menu_camera"
+            android:title="@string/mycard" />
+        <item
+            android:id="@+id/id_myclass"
+            android:icon="@android:drawable/ic_menu_gallery"
+            android:title="@string/myclass" />
+        <item
+            android:id="@+id/id_searchcard"
+            android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="@string/searchcard" />
+        <item
+            android:id="@+id/id_mysetting"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="@string/mysetting"
+            />
+    </group>
+
+    <item android:title="=================">
+        <menu>
+            <item
+                android:id="@+id/nav_logoff"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="@string/logoff" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_menu_send"
+                android:title="@string/logout" />
+        </menu>
+    </item>
+
+</menu>

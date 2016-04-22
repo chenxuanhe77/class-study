@@ -1,0 +1,69 @@
+package com.example.chenxuanhe.myapplication.utils;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by chenxuanhe on 2016/4/22.
+ */
+public class Info {
+
+    final static String BaseURL = "http://wifi.13550101.com/app/";
+
+    /**
+     * 获取个人信息
+     * @param mToken
+     * @return
+     */
+    public static String getUserInfo(String mToken){
+        try{
+            String URL = BaseURL+"base_info?token="+
+                    URLEncoder.encode(mToken, "UTF-8");
+            return  Netget.NetConn(URL);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+    * 保存个人档案*/
+
+    public static boolean saveUserInfo(Context context,String mID,String mName,
+                                       String mTell,String mAvatar,String mQQ){
+        SharedPreferences wc = context.getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = wc.edit();
+        editor.putString("infoID",mID);
+        editor.putString("infoName",mName);
+        editor.putString("infoTell",mTell);
+        editor.putString("infoQQ",mQQ);
+        editor.putString("infoAvatar", mAvatar);
+        editor.commit();
+        return  true;
+    }
+
+    /**
+     * 用于读取个人档案
+     * */
+    public static Map<String,String>getUserInfo(Context context){
+        SharedPreferences wc = context.getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        String mID = wc.getString("infoID", null);
+        String mQQ = wc.getString("infoQQ", null);
+        String mTell = wc.getString("infoTell",null);
+        String mName = wc.getString("infoName",null);
+        String mAvatar = wc.getString("infoAvatar",null);
+        Map<String,String> userMap = new HashMap<>();
+        userMap.put("infoID",mID);
+        userMap.put("infoQQ",mQQ);
+        userMap.put("infoTell",mTell);
+        userMap.put("infoName",mName);
+        userMap.put("infoAcatar",mAvatar);
+        return userMap;
+    }
+
+
+}
