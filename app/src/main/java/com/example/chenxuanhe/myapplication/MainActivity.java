@@ -18,80 +18,102 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
-
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-
+        /**
+         * 点击右下角fab事件
+         * */
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
+
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+
+
+    Map<String,String> loginInfo = Info.getLoginInfo(MainActivity.this);
+    Toast.makeText(MainActivity.this,""+loginInfo,Toast.LENGTH_SHORT).show();
+    if(loginInfo!=null){
+        if (loginInfo.get("mToken")!=null){
+            getInfo(loginInfo.get("mToken"));
+            Toast.makeText(MainActivity.this,"欢迎回来",Toast.LENGTH_SHORT).show();
+        }else{
+            //Toast.makeText(MainActivity.this,"找不到你的Token啊",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this,Login.class);
+            startActivity(intent);
+            finish();
+        }
+    }else {
+        Toast.makeText(MainActivity.this,"你的LoginInfo压根就是空的",Toast.LENGTH_SHORT).show();
+        finish();
+    }}
+
 
 
 
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
     }
-
+     /**
+      * 用于创建MenuIItem
+      * */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    /**
+     * 点击MenuItem的事件
+     *
+     * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_settings) {
             return true;
         }
@@ -134,48 +156,73 @@ public class MainActivity extends AppCompatActivity
            finish();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
+        /**
+         * 点击头像显示个人信息
+         * QQ Tell Name Avatar
+         */
     public void onClickImage(View view){
         Intent intent = new Intent();
         intent.setClass(MainActivity.this,MyInfo.class);
         startActivity(intent);
     }
-
+         /**
+          * 侧滑框
+          * 获得信息
+          * */
     public void getInfo(final String mToken){
-        final ImageView mAvatar = (ImageView)findViewById(R.id.id_imageView);
-        final TextView mId  = (TextView)findViewById(R.id.id_id);
-        final TextView mName = (TextView)findViewById(R.id.id_name);
+        View view = mNavigationView.inflateHeaderView(R.layout.nav_header_main);
+        final ImageView mAvatar = (ImageView)view.findViewById(R.id.id_imageView);
+        final TextView mId  = (TextView)view.findViewById(R.id.id_id);
+        final TextView mName = (TextView)view.findViewById(R.id.id_name);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo= connectivityManager.getActiveNetworkInfo();
         if(networkInfo==null||!networkInfo.isAvailable()){
             Toast.makeText(getApplicationContext(),"网络不可用",Toast.LENGTH_SHORT).show();
+            Map<String,String> userinfo = Info.getUserInfo(MainActivity.this);
         }else{
             new Thread(){
                 public void  run(){
-                    final String result = Info.getUserInfo(mToken);
+                    final String result = Netget.getUserInfo(mToken);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     if(result!=null){
                         try{
                             JSONTokener jsonTokener = new JSONTokener(result);
                             JSONObject jsonObject = (JSONObject)  jsonTokener.nextValue();
                             if(jsonObject.getInt("error")==0){
-                                JSONObject object = new JSONObject(result).getJSONObject("data");
-                                String Avatar = object.getString("avatar");
-                                byte[] getUserAvatar = Netget.getUserAvatar();
-                                final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar,0,Avatar.length());
-                                boolean isSaveSuccess
+                                JSONObject object = new JSONObject(result);
+                                String infoAvatar = object.getString("avatar");
+                                String infoID = object.getString("xuehao");
+                                String infoQQ = object.getString("QQ");
+                                String infoTell = object.getString("tel");
+                                String infoName = object.getString("name");
+                                boolean isSaveSuccess = Info.saveUserInfo(MainActivity.this, infoID,
+                                        infoName,infoTell,infoAvatar,infoQQ);
+                                byte[] Avatar = Netget.getUserAvatar(infoAvatar);
+                                final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar,0,Avatar.length);
                                 if(isSaveSuccess){
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            Map<String,String> userinfo = Info.getUserInfo(MainActivity.this);
                                             mAvatar.setImageBitmap(bitmap);
-                                            mId.setText(userInfo.get("id"));
-                                            mName.setText(userInfo.get("Name"));
-
+                                            mId.setText(userinfo.get("infoID"));
+                                            mName.setText(userinfo.get("infoName"));
+                                        }
+                                    });
+                                } else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(MainActivity.this, "123", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }

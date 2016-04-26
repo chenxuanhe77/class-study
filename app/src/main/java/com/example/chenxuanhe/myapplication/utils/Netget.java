@@ -1,25 +1,21 @@
 package com.example.chenxuanhe.myapplication.utils;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
+
 
 import com.example.chenxuanhe.myapplication.StreamTools;
-
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * Created by chenxuanhe on 2016/4/22.
  */
 public class Netget {
 
-    final static String BaseURL = "http://wifi.13550101.com/app/";
+    final static String BaseURL = "http://api.13550101.com/";
 
     /**
      * 封装网络
@@ -46,6 +42,8 @@ public class Netget {
         return  null;
     }
 
+
+
     /**
      * 用于获取头像
      * @param URL
@@ -66,6 +64,23 @@ public class Netget {
             return null;
         }
     }
+
+    /**
+     * 获取个人信息
+     * @param mToken
+     * @return
+     */
+    public static String getUserInfo(String mToken){
+        try{
+            String URL = BaseURL+"user/info?token="+
+                    URLEncoder.encode(mToken, "UTF-8");
+            return  Netget.NetConn(URL);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
 

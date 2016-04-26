@@ -12,7 +12,7 @@ public class LoginService {
     //使用get方法提交数据
     public static String loginByGet(String username,String password){
         try{
-            String visit ="http://wifi.13550101.com/app/token?username="
+            String visit ="http://api.13550101.com/login/token?username="
                     + URLEncoder.encode(username,"UTF-8")
                     +"&password="
                     +URLEncoder.encode(password,"UTF-8");

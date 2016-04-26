@@ -34,7 +34,9 @@ public class Login extends ActionBarActivity {
 
 
 
-
+    /**
+     * 登录界面MenuItem
+     * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -50,8 +52,11 @@ public class Login extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * 增加可选项
+     * */
     @Override
-    //增加可选项
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -89,17 +94,18 @@ public class Login extends ActionBarActivity {
                                     public void run(){
                                         Toast.makeText(Login.this,"登录成功",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent();
-                                        intent.setClass(Login.this,MainActivity.class);
+                                        intent.setClass(Login.this, MainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     }
                                 });
                             }}
                         else{if(jsonObject.getInt("error")==1){
+                            final String message = jsonObject.getString("message");
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(Login.this, "登录失败", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Login.this,message, Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -115,11 +121,13 @@ public class Login extends ActionBarActivity {
         }.start();
     }
 
-
+    /**
+     *保存Token
+     **/
     private static boolean saveUserInfo(Context context,String mID,String mToken) {
-        SharedPreferences wc= context.getSharedPreferences("Userdata", Context.MODE_PRIVATE);
+        SharedPreferences wc= context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit= wc.edit();
-        edit.putString("mID", mID);
+        edit.putString("mID",mID);
         edit.putString("mToken", mToken);
         edit.commit();
         return true;
