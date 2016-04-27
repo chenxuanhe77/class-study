@@ -4,19 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/id_mycard"
-            android:icon="@android:drawable/ic_menu_camera"
+            android:icon="@drawable/mycard"
             android:title="@string/mycard" />
         <item
             android:id="@+id/id_myclass"
-            android:icon="@android:drawable/ic_menu_gallery"
+            android:icon="@drawable/mylesson"
             android:title="@string/myclass" />
         <item
             android:id="@+id/id_searchcard"
-            android:icon="@android:drawable/ic_menu_slideshow"
+            android:icon="@drawable/mylost"
             android:title="@string/searchcard" />
         <item
             android:id="@+id/id_mysetting"
-            android:icon="@android:drawable/ic_menu_manage"
+            android:icon="@drawable/setting"
             android:title="@string/mysetting"
             />
     </group>
@@ -25,11 +25,11 @@
         <menu>
             <item
                 android:id="@+id/nav_logoff"
-                android:icon="@android:drawable/ic_menu_share"
+                android:icon="@drawable/zhuxiao"
                 android:title="@string/logoff" />
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@android:drawable/ic_menu_send"
+                android:icon="@drawable/logout"
                 android:title="@string/logout" />
         </menu>
     </item>

@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -109,13 +108,10 @@ public class Login extends ActionBarActivity {
                                 }
                             });
                         }
-
                         }
-
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-
                 }
             }
         }.start();

@@ -2,8 +2,6 @@ package com.example.chenxuanhe.myapplication.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +13,8 @@ public class Info {
     /**
     * 保存个人档案
      *
-     * */
+     *
+     * * */
 
     public static boolean saveUserInfo(Context context,String mID,String mName,
                                        String mTell,String mAvatar,String mQQ){

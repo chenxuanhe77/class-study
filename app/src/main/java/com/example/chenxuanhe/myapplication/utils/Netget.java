@@ -1,8 +1,6 @@
 package com.example.chenxuanhe.myapplication.utils;
 
 
-
-
 import com.example.chenxuanhe.myapplication.StreamTools;
 import java.io.InputStream;
 import java.net.HttpURLConnection;

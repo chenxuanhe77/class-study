@@ -3,7 +3,9 @@ package com.example.chenxuanhe.myapplication;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,12 +23,15 @@ public class MyInfo extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myinfo_main);
 
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         ImageView head = (ImageView)findViewById(R.id.stu_avatar);
         TextView name = (TextView) findViewById(R.id.stu_name);
         TextView id = (TextView) findViewById(R.id.stu_id);
         TextView QQ = (TextView) findViewById(R.id.stu_QQ);
         TextView Tell = (TextView) findViewById(R.id.stu_TEL);
-       
+
     }
 
     public static Map<String,String>  getMyinfo(Context context){
@@ -43,6 +48,23 @@ public class MyInfo extends AppCompatActivity{
         userMap.put("infoTell", mTell);
         userMap.put("infoAvatar",mAvatar);
         return userMap;
+    }
+
+    /**
+     * 用于界面返回按钮
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

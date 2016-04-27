@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "大兄弟，你就不能不点这个么，阿西吧！", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -59,26 +59,25 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-
         mNavigationView.setNavigationItemSelectedListener(this);
 
 
-
     Map<String,String> loginInfo = Info.getLoginInfo(MainActivity.this);
-    Toast.makeText(MainActivity.this,""+loginInfo,Toast.LENGTH_SHORT).show();
     if(loginInfo!=null){
         if (loginInfo.get("mToken")!=null){
             getInfo(loginInfo.get("mToken"));
-            Toast.makeText(MainActivity.this,"欢迎回来",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,"亲，读到你的信息了呦！",Toast.LENGTH_SHORT).show();
         }else{
-            //Toast.makeText(MainActivity.this,"找不到你的Token啊",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent();
             intent.setClass(MainActivity.this,Login.class);
             startActivity(intent);
             finish();
         }
     }else {
-        Toast.makeText(MainActivity.this,"你的LoginInfo压根就是空的",Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this,"未读取到任何信息，请重新登录喔i",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this,Login.class);
+        startActivity(intent);
         finish();
     }}
 
@@ -124,7 +123,6 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.id_mycard) {
@@ -187,12 +185,6 @@ public class MainActivity extends AppCompatActivity
             new Thread(){
                 public void  run(){
                     final String result = Netget.getUserInfo(mToken);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
-                        }
-                    });
                     if(result!=null){
                         try{
                             JSONTokener jsonTokener = new JSONTokener(result);
@@ -222,7 +214,7 @@ public class MainActivity extends AppCompatActivity
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Toast.makeText(MainActivity.this, "123", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this, "个人档案并没有保存成功嚯！", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
