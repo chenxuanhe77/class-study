@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 
 /**
  * Created by chenxuanhe on 2016/4/28.
+ * git上别人的StatusBar
  */
 public class StatusBarCompat {
     public static final String TAG = StatusBarCompat.class.getName();

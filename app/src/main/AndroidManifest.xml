@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".Login"></activity>
         <activity android:name=".MyInfo"></activity>
+        <activity android:name=".Mycard"></activity>
     </application>
 
 </manifest>
