@@ -9,7 +9,9 @@ import java.net.URLEncoder;
  * Created by chenxuanhe on 2016/4/19.
  */
 public class LoginService {
-    //使用get方法提交数据
+    /**
+     * 使用get方法提交数据
+     * */
     public static String loginByGet(String username,String password){
         try{
             String visit ="http://api.13550101.com/login/token?username="

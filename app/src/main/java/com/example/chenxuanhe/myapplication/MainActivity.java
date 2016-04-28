@@ -182,6 +182,12 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(),"网络不可用",Toast.LENGTH_SHORT).show();
             Map<String,String> userinfo = Info.getUserInfo(MainActivity.this);
         }else{
+
+            /**
+             * 开启一个新线程联网
+             * 获取侧滑框的信息
+             * */
+
             new Thread(){
                 public void  run(){
                     final String result = Netget.getUserInfo(mToken);
@@ -201,6 +207,9 @@ public class MainActivity extends AppCompatActivity
                                 byte[] Avatar = Netget.getUserAvatar(infoAvatar);
                                 final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar,0,Avatar.length);
                                 if(isSaveSuccess){
+
+                                    /**返回主线程*/
+
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -219,15 +228,13 @@ public class MainActivity extends AppCompatActivity
                                     });
                                 }
                             }
-                        }catch (Exception e){e.printStackTrace();}
-
+                        }catch (Exception e)
+                        {e.printStackTrace();}
                     }
                 }
             }.start();
 
-
         }
-
 
     }
 
