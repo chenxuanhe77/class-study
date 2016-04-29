@@ -3,8 +3,73 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+       <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="wrap_content"
+           android:layout_height="200dp"
+           android:weightSum="1">
+
+           <ImageView
+               android:id="@+id/card_Avatar"
+               android:layout_marginLeft="10dp"
+               android:layout_marginTop="10dp"
+               android:layout_width="100dp"
+               android:layout_height="100dp"
+               />
+                 <LinearLayout
+                 android:orientation="vertical"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content">
+           <TextView
+                 android:text="姓名"
+                 android:id="@+id/card_Name"
+                 android:textSize="20dp"
+                 android:layout_marginLeft="10dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 />
+
+           <TextView
+                 android:text="余额"
+                 android:textSize="20dp"
+                 android:id="@+id/card_Balance"
+                 android:layout_marginLeft="10dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 />
+
+                 </LinearLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <ListView
+        android:id="@+id/card_Listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:listSelector="#00000000">
+
+    </ListView>
 
 </LinearLayout>
+
+
+
+
+
+
+

@@ -63,6 +63,21 @@ public class Netget {
         }
     }
 
+
+    /**
+     * 获取校园卡token
+     * 校园卡的token
+     * */
+    public static  String getCardInfo(String mToken){
+        try{
+            String URL = BaseURL+"ticknet/card?token="+
+                    URLEncoder.encode(mToken,"UTF-8");
+            return Netget.NetConn(URL);
+        }catch (Exception e){
+            e.printStackTrace();}
+        return null;
+    }
+
     /**
      * 获取个人信息
      * @param mToken
