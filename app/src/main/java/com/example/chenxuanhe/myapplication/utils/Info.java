@@ -29,6 +29,20 @@ public class Info {
         return  true;
     }
 
+
+    /**
+     * 用于删除token
+     * 删除信息重新登录
+     * */
+    public static boolean deleteUserInfo(Context context){
+        SharedPreferences wc = context.getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = wc.edit();
+        editor.clear();
+        editor.commit();
+        return true;
+    }
+
+
     /**
      * 用于读取个人档案
      * */

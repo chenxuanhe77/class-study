@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="#FFF5EE"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -28,25 +29,26 @@
                  android:orientation="vertical"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content">
-           <TextView
-                 android:text="姓名"
-                 android:id="@+id/card_Name"
-                 android:textSize="20dp"
-                 android:layout_marginLeft="10dp"
-                 android:layout_marginTop="10dp"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 />
+                 <TextView
+                  android:text="姓名"
+                  android:id="@+id/card_Name"
+                  android:textSize="20dp"
+                  android:layout_marginLeft="10dp"
+                  android:layout_marginTop="10dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                   />
 
-           <TextView
-                 android:text="余额"
-                 android:textSize="20dp"
-                 android:id="@+id/card_Balance"
-                 android:layout_marginLeft="10dp"
-                 android:layout_marginTop="10dp"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 />
+                  <TextView
+                  android:text="余额"
+                  android:id="@+id/card_Balance"
+                  android:textSize="20dp"
+
+                  android:layout_marginLeft="10dp"
+                  android:layout_marginTop="10dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  />
 
                  </LinearLayout>
 
