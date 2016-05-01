@@ -35,10 +35,8 @@ public class Mycard extends AppCompatActivity {
     private TextView card_Name;
     private TextView card_Banlance;
     private ListView card_Listview;
-
     private ProgressDialog mDialog;
     private SwipeRefreshLayout mswipeLayout;
-
     private HashMap<String,Object> CardInfo;
     private List<HashMap<String,Object>> CardInfos;
 

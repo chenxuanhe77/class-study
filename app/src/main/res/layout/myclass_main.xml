@@ -1,12 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:rowCount="11"
+    android:columnCount="2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_rowSpan="2"
+    >
+
+    <LinearLayout
+
+        >
+
+
+    </LinearLayout>
+ <TextView
+     android:text="adsadaaad"
+     android:textSize="50dp"
+     android:layout_rowSpan="2"
+     android:id="@+id/idd"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:text="ssssa"
         android:layout_height="wrap_content"
-        android:text="CLASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
-        android:textSize="50dp"
+        android:layout_width="wrap_content"
         />
-</LinearLayout>
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        android:text="ssssa"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+
+
+
+</GridLayout>

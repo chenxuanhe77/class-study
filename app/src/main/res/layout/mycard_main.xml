@@ -21,7 +21,7 @@
            <ImageView
                android:id="@+id/card_Avatar"
                android:layout_marginLeft="10dp"
-               android:layout_marginTop="10dp"
+               android:layout_marginTop="8dp"
                android:layout_width="100dp"
                android:layout_height="100dp"
                />

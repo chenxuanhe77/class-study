@@ -75,6 +75,47 @@ public class Info {
         return map;
     }
 
+    /**
+     * 用于读取课表信息
+     *
+     * */
+    public static Map<String,String> getClassInfo(Context context){
+        SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        String mTime = wc.getString("infoTime", null);
+        String mLesson = wc.getString("infoLesson",null);
+        String mClassroom = wc.getString("infoClassroom",null);
+        String mTeacher = wc.getString("infoTeacher",null);
+        String mWeeks = wc.getString("infoWeeks",null);
+        String mCourse = wc.getString("infoCourse",null);
+        Map<String,String> classMap = new HashMap<>();
+        classMap.put("infoTime",mTime);
+        classMap.put("infoLesson",mLesson);
+        classMap.put("infoClassroom",mClassroom);
+        classMap.put("infoTeacher",mTeacher);
+        classMap.put("infoWeeks",mWeeks);
+        classMap.put("infoCourse",mCourse);
+        return classMap;
+    }
+
+    /**
+     * 课程表的缓存
+     * 用于保存课表信息缓存
+     * 方便下一次查询
+     * */
+    public static boolean saveClassInfo(Context context,String mTime,String mLesson,String mClassroom,
+                                        String mTeacher,String mWeeks,String mCourse){
+        SharedPreferences wc = context.getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = wc.edit();
+        editor.putString("infoTime",mTime);
+        editor.putString("infoLesson",mLesson);
+        editor.putString("infoClassroom",mClassroom);
+        editor.putString("infoTeacher",mTeacher);
+        editor.putString("infoWeeks",mWeeks);
+        editor.putString("infoCourse",mCourse);
+        editor.commit();
+        return true;
+    }
+
 
 
 }
