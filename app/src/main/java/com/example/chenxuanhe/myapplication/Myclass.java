@@ -22,7 +22,8 @@ import java.util.Map;
 public class Myclass extends AppCompatActivity {
 
     private TextView textView;
-    private TextView mtextView;
+    private TextView one;
+    private TextView sss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class Myclass extends AppCompatActivity {
 
 
         textView = (TextView) findViewById(R.id.idd);
+        one = (TextView)findViewById(R.id.one);
+        sss = (TextView)findViewById(R.id.sss);
 
         final Map<String,String> getToken = Info.getLoginInfo(Myclass.this);
         getInfo(getToken.get("mToken"));
@@ -61,16 +64,22 @@ public class Myclass extends AppCompatActivity {
                             case 0:
                                 JSONObject jsb = jsonObject.getJSONObject("data");
                                 JSONObject info = jsb.getJSONObject("info");
+                                JSONObject infos = jsb.getJSONObject("data");
+                                JSONObject ones = infos.getJSONObject("1");
                                 //取得当前的日期及时间
                                 int mYear,mMonth,mDay;
                                 Calendar c = Calendar.getInstance();
                                 mYear = c.get(Calendar.YEAR);
-                                mMonth = c.get(Calendar.MONTH);
+                                mMonth = c.get(Calendar.MONTH)+1;
                                 mDay = c.get(Calendar.DAY_OF_MONTH);
                                 //在TextView中显示日期及时间
                                 textView.setText(new StringBuilder().append(mYear).append("-")
                                         .append(mMonth).append("-")
                                         .append(mDay).append(" "));
+                                final String remarks =infos.getString("2");
+                                sss.setText(remarks);
+
+
 
                         }
 

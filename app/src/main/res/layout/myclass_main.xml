@@ -1,138 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:rowCount="11"
     android:columnCount="2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_rowSpan="2"
     >
 
     <LinearLayout
-
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         >
+
+         <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <TextView
+           android:text="adsadaaad"
+           android:textSize="50dp"
+           android:layout_rowSpan="2"
+           android:id="@+id/idd"
+           android:gravity="center"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+            />
+         </LinearLayout>
+
+        <TextView
+            android:id="@+id/sss"
+            android:textSize="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <GridLayout
+            android:rowCount="5"
+            android:columnCount="2"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="586dp"
+            >
+
+            <TextView
+            android:text="一二"
+            android:textSize="40dp"
+            />
+
+            <TextView
+                android:id="@+id/one"
+                android:layout_width="match_parent"
+                android:paddingRight="1dp"
+                android:layout_height="wrap_content"
+                android:text="12"
+                android:textSize="10dp"
+                />
+
+            <TextView
+                android:text="三四"
+                android:textSize="40dp"
+                />
+
+            <TextView
+                android:id="@+id/two"
+                android:text="34"
+                android:textSize="40dp"
+                />
+
+            <TextView
+                android:text="五六"
+                android:textSize="40dp"
+                />
+
+            <TextView
+                android:id="@+id/three"
+                android:text="56"
+                android:textSize="40dp"
+                />
+
+            <TextView
+                android:text="七八"
+                android:textSize="40dp"
+                />
+
+            <TextView
+                android:id="@+id/four"
+                android:text="78"
+                android:textSize="40dp"
+                />
+
+            <TextView
+                android:text="九十"
+                android:textSize="40dp"
+                />
+
+            <TextView
+                android:id="@+id/five"
+                android:text="9.10"
+                android:textSize="40dp"
+                />
+
+
+        </GridLayout>
 
 
     </LinearLayout>
- <TextView
-     android:text="adsadaaad"
-     android:textSize="50dp"
-     android:layout_rowSpan="2"
-     android:id="@+id/idd"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
-
-    <TextView
-        android:text="ssssa"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
 
 
 
-
-</GridLayout>
+</ScrollView>
