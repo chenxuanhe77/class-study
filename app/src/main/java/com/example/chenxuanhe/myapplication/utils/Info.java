@@ -10,24 +10,6 @@ import java.util.Map;
  */
 public class Info {
 
-    /**
-    * 保存个人档案
-     *
-     *
-     * * */
-
-    public static boolean saveUserInfo(Context context,String mID,String mName,
-                                       String mTell,String mAvatar,String mQQ){
-        SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = wc.edit();
-        editor.putString("infoID",mID);
-        editor.putString("infoName", mName);
-        editor.putString("infoTell", mTell);
-        editor.putString("infoQQ", mQQ);
-        editor.putString("infoAvatar", mAvatar);
-        editor.commit();
-        return  true;
-    }
 
 
     /**
@@ -74,6 +56,42 @@ public class Info {
         map.put("mToken", mToken);
         return map;
     }
+    /**
+     * 保存个人档案
+     *
+     *
+     * * */
+
+    public static boolean saveUserInfo(Context context,String mID,String mName,
+                                       String mTell,String mAvatar,String mQQ){
+        SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = wc.edit();
+        editor.putString("infoID",mID);
+        editor.putString("infoName", mName);
+        editor.putString("infoTell", mTell);
+        editor.putString("infoQQ", mQQ);
+        editor.putString("infoAvatar", mAvatar);
+        editor.commit();
+        return  true;
+    }
+    /**
+     * 课程表的缓存
+     * 用于保存课表信息缓存
+     * 方便下一次查询
+     * */
+    public static boolean saveClassInfo(Context context,String mTime, String mClassroom,
+                                        String mWeeks,String mCourse){
+        SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = wc.edit();
+        editor.putString("infoTime", mTime);         // 周数
+        editor.putString("infoClassroom", mClassroom);  //教室
+        editor.putString("infoWeeks", mWeeks);      //0011110101010
+        editor.putString("infoCourse", mCourse);     //课程名
+        editor.commit();
+        return true;
+    }
+
+
 
     /**
      * 用于读取课表信息
@@ -82,38 +100,15 @@ public class Info {
     public static Map<String,String> getClassInfo(Context context){
         SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
         String mTime = wc.getString("infoTime", null);
-        String mLesson = wc.getString("infoLesson",null);
         String mClassroom = wc.getString("infoClassroom",null);
-        String mTeacher = wc.getString("infoTeacher",null);
         String mWeeks = wc.getString("infoWeeks",null);
-        String mCourse = wc.getString("infoCourse",null);
+        String mCourse = wc.getString("infoCourse", null);
         Map<String,String> classMap = new HashMap<>();
         classMap.put("infoTime",mTime);
-        classMap.put("infoLesson",mLesson);
-        classMap.put("infoClassroom",mClassroom);
-        classMap.put("infoTeacher",mTeacher);
-        classMap.put("infoWeeks",mWeeks);
-        classMap.put("infoCourse",mCourse);
+        classMap.put("infoClassroom", mClassroom);
+        classMap.put("infoWeeks", mWeeks);
+        classMap.put("infoCourse", mCourse);
         return classMap;
-    }
-
-    /**
-     * 课程表的缓存
-     * 用于保存课表信息缓存
-     * 方便下一次查询
-     * */
-    public static boolean saveClassInfo(Context context,String mTime,String mLesson,String mClassroom,
-                                        String mTeacher,String mWeeks,String mCourse){
-        SharedPreferences wc = context.getSharedPreferences("UserData",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = wc.edit();
-        editor.putString("infoTime",mTime);
-        editor.putString("infoLesson",mLesson);
-        editor.putString("infoClassroom",mClassroom);
-        editor.putString("infoTeacher",mTeacher);
-        editor.putString("infoWeeks",mWeeks);
-        editor.putString("infoCourse",mCourse);
-        editor.commit();
-        return true;
     }
 
 

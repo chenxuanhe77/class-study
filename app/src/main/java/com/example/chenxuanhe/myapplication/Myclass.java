@@ -1,8 +1,11 @@
 package com.example.chenxuanhe.myapplication;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.TextPaint;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -12,8 +15,10 @@ import com.example.chenxuanhe.myapplication.utils.Netget;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,9 +68,9 @@ public class Myclass extends AppCompatActivity {
                         switch (error){
                             case 0:
                                 JSONObject jsb = jsonObject.getJSONObject("data");
-                                JSONObject info = jsb.getJSONObject("info");
-                                JSONObject infos = jsb.getJSONObject("data");
-                                JSONObject ones = infos.getJSONObject("1");
+                                JSONObject info = jsb.getJSONObject("data");
+                                JSONObject ones = info.getJSONObject("1");
+
                                 //取得当前的日期及时间
                                 int mYear,mMonth,mDay;
                                 Calendar c = Calendar.getInstance();
@@ -76,8 +81,10 @@ public class Myclass extends AppCompatActivity {
                                 textView.setText(new StringBuilder().append(mYear).append("-")
                                         .append(mMonth).append("-")
                                         .append(mDay).append(" "));
-                                final String remarks =infos.getString("2");
+                                final String remarks =info.getString("1");
                                 sss.setText(remarks);
+                                TextPaint tp = sss.getPaint();
+                                tp.setFakeBoldText(true);
 
 
 
