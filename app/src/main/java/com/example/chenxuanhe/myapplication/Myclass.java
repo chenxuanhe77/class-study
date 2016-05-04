@@ -11,14 +11,8 @@ import android.widget.TextView;
 
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
-
 import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,7 +32,8 @@ public class Myclass extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
+        //新UI暂时取消显示时间TextView
+        //还在改进
         textView = (TextView) findViewById(R.id.idd);
         one = (TextView)findViewById(R.id.one);
         sss = (TextView)findViewById(R.id.sss);

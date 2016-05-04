@@ -95,6 +95,7 @@ public class Info {
 
     /**
      * 用于读取课表信息
+     * 目前与室友讨论认定缓存一周课表没用
      *
      * */
     public static Map<String,String> getClassInfo(Context context){
