@@ -1,113 +1,129 @@
 package com.example.chenxuanhe.myapplication;
 
-import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.TextPaint;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.chenxuanhe.myapplication.utils.Info;
-import com.example.chenxuanhe.myapplication.utils.Netget;
-import org.json.JSONObject;
-import java.util.Calendar;
-import java.util.Map;
+import it.neokree.materialtabs.MaterialTab;
+import it.neokree.materialtabs.MaterialTabHost;
+import it.neokree.materialtabs.MaterialTabListener;
 
 /**
- * Created by chenxuanhe on 2016/4/16.
+ * Created by neokree on 30/12/14.
  */
-public class Myclass extends AppCompatActivity {
+public class Myclass extends AppCompatActivity implements MaterialTabListener {
 
-    private TextView textView;
-    private TextView one;
-    private TextView sss;
+    MaterialTabHost tabHost;
+    ViewPager pager;
+    ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myclass_main);
+
         setTitle("怎么又是上课呢~");
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //新UI暂时取消显示时间TextView
-        //还在改进
-        textView = (TextView) findViewById(R.id.idd);
-        one = (TextView)findViewById(R.id.one);
-        sss = (TextView)findViewById(R.id.sss);
+        tabHost = (MaterialTabHost) this.findViewById(R.id.tabHost);
+        pager = (ViewPager) this.findViewById(R.id.pager );
 
-        final Map<String,String> getToken = Info.getLoginInfo(Myclass.this);
-        getInfo(getToken.get("mToken"));
-
-    }
-
-
-    /**
-     * 用token发起得到数据
-     * 然后根据得到的 week比对
-     * 当week等于现在的时间则拉取数据到activity
-     * 时间不相等则
-     * */
-    public void getInfo(final String mToken){
-        new Thread(){
+        //  适配器
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+        pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
-            public void run(){
-                final String result = Netget.getClassInfo(mToken);
-                if(result!=null){
-                    try{
-                        JSONObject jsonObject = new JSONObject(result);
-                        int error = jsonObject.getInt("error");
-                        String message = jsonObject.getString("message");
-                        switch (error){
-                            case 0:
-                                JSONObject jsb = jsonObject.getJSONObject("data");
-                                JSONObject info = jsb.getJSONObject("data");
-                                JSONObject ones = info.getJSONObject("1");
+            public void onPageSelected(int position) {
 
-                                //取得当前的日期及时间
-                                int mYear,mMonth,mDay;
-                                Calendar c = Calendar.getInstance();
-                                mYear = c.get(Calendar.YEAR);
-                                mMonth = c.get(Calendar.MONTH)+1;
-                                mDay = c.get(Calendar.DAY_OF_MONTH);
-                                //在TextView中显示日期及时间
-                                textView.setText(new StringBuilder().append(mYear).append("-")
-                                        .append(mMonth).append("-")
-                                        .append(mDay).append(" "));
-                                final String remarks =info.getString("1");
-                                sss.setText(remarks);
-                                TextPaint tp = sss.getPaint();
-                                tp.setFakeBoldText(true);
+                tabHost.setSelectedNavigationItem(position);
 
-
-
-                        }
-
-                    }catch (Exception e){
-                        e.printStackTrace();}
-                }
             }
-        }.start();
+        });
+
+        /**
+         * 插入来自pagerAdapter数据的所有标签
+         */
+        for (int i = 1; i < adapter.getCount(); i++) {
+            tabHost.addTab(
+                    tabHost.newTab()
+                            .setText(adapter.getPageTitle(i))
+                            .setTabListener(this)
+            );
+
+        }
+
     }
 
 
+    @Override
+    public void onTabSelected(MaterialTab tab) {
+        pager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabReselected(MaterialTab tab) {
+
+    }
+
+    @Override
+    public void onTabUnselected(MaterialTab tab) {
+
+    }
+
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+        public Fragment getItem(int num) {
+            return new FragmentText();
+        }
+
+        @Override
+        public int getCount() {
+            return 7;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "星期 " + position;
+        }
+
+    }
 
     /**
-     * 用于actionbar返回页面功能
+     * 用于返回主线程并Toast的方法
      *
-     * */
-    public boolean onOptionsItemSelected(MenuItem item){
+     */
+    public void Toast(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Myclass.this, "读取信息失败，请重新登录", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * 用于界面的左上角返回按钮
+     * @param item
+     * @return
+     */
+    public  boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
                 this.finish();
                 break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
-
-
