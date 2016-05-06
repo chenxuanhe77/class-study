@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.List;
+
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
@@ -78,12 +81,31 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+        private FragmentLesson[] fragments;
 
+        /**
+         * 用于重复调用7个fragment
+         * @param fm
+         */
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
+            fragments = new FragmentLesson[7];
+            for(int i=0;i<7;i++){
+                fragments[i] = new FragmentLesson();
+            }
         }
+
+        /**
+         * 用于更新数据
+         * @param index
+         * @param data
+         */
+        public void updata(int index,List<HashMap<String,Object>> data){
+           fragments[index].updata(data);
+        }
+
         public Fragment getItem(int num) {
-            return new FragmentText();
+            return new FragmentLesson();
         }
 
         @Override
@@ -93,6 +115,7 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
 
         @Override
         public CharSequence getPageTitle(int position) {
+            int temp = position+1;
             return "星期 " + position;
         }
 
