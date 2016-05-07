@@ -7,12 +7,18 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+import com.example.chenxuanhe.myapplication.utils.Info;
+import com.example.chenxuanhe.myapplication.utils.Netget;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
@@ -25,6 +31,8 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
     MaterialTabHost tabHost;
     ViewPager pager;
     ViewPagerAdapter adapter;
+
+    private List<HashMap<String,Object>>[] WeekCourse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +52,135 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
         pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-
+                //当用户在选定的标签更改的重击
                 tabHost.setSelectedNavigationItem(position);
-
+                if(WeekCourse!=null){
+                    adapter.update(position, WeekCourse[position]);
+                }
             }
         });
 
         /**
          * 插入来自pagerAdapter数据的所有标签
          */
-        for (int i = 1; i < adapter.getCount(); i++) {
+        for (int i = 0; i < adapter.getCount(); i++) {
             tabHost.addTab(
                     tabHost.newTab()
                             .setText(adapter.getPageTitle(i))
                             .setTabListener(this)
             );
-
         }
 
+        Calendar calendar = Calendar.getInstance();
+        int temp = calendar.get(Calendar.DAY_OF_WEEK)-2;
+        pager.setCurrentItem(temp);
+
+        Map<String,String> LoginInfo = Info.getLoginInfo(Myclass.this);
+        //Toast(LoginInfo.get("mToken"));
+        getLesson(LoginInfo.get("mToken"));
     }
 
+    /**
+     * 用于token发请求拉取信息
+     * 得到返回的message
+     * */
+    public String  getLesson(final String mToken){
+        new Thread(){
+            public void run(){
+                String result = Netget.getClassInfo(mToken);
+                if(result!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        int error = jsonObject.getInt("error");
+                        String message = jsonObject.getString("message");
+                        switch(error){
+                            case 0:
+                                getInfo(jsonObject);
+                                break;
+                            case 1:
+                                Toast(message);
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                break;
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }else {
+                    Toast("信息有误，请重新登录");
+                }
+            }
+        }.start();
+
+        return null;
+    }
+
+    /**
+     * 用来获取课程表信息细节
+     * 课程。时间。教室。节数
+     * 用Json来解析数据
+     * @param jsonObject
+     */
+    public void getInfo(JSONObject jsonObject){
+        try{
+            JSONObject object = jsonObject.getJSONObject("data");
+            JSONObject data = object.getJSONObject("data");
+            WeekCourse = new List[7];
+            for(int i = 1; i < 7 ;i ++){
+                WeekCourse[i -1] = new ArrayList<>();
+                JSONObject Day = data.getJSONObject("" + i);
+                List<HashMap<String,Object>> DayClass = new ArrayList<>();
+                for(int m =1;m <=5;m ++){
+                    JSONArray lesson = Day.getJSONArray(""+m);
+
+                    for(int n = 0; n<lesson.length();n++){
+                        JSONObject datas = (JSONObject) lesson.get(n);
+                        String name = datas.getString("course");
+                        String time = datas.getString("time");
+                        String room = datas.getString("classroom");
+
+                        HashMap<String,Object> ClassInfo = new HashMap<>();
+                        ClassInfo.put("Num",m);
+                        ClassInfo.put("Name",name);
+                        ClassInfo.put("Time",time);
+                        ClassInfo.put("Room",room);
+
+                        DayClass.add(ClassInfo);
+                    }
+                }WeekCourse[i-1] = DayClass;
+            }
+
+            Log.d("cxh","getInfo:data end");
+            for (int i = 0;i <7;i++){
+                final int FBI = i;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.update(FBI, WeekCourse[FBI]);
+                    }
+                });
+            }
+            Log.d("cxh","getInfo:data end");
+
+        }catch (Exception e){
+            e.printStackTrace();}
+    }
+
+    /**
+     * 用于返回主线程并Toast的方法
+     *
+     */
+    public void Toast(final String message){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Myclass.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public void onTabSelected(MaterialTab tab) {
@@ -95,17 +212,9 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
             }
         }
 
-        /**
-         * 用于更新数据
-         * @param index
-         * @param data
-         */
-        public void updata(int index,List<HashMap<String,Object>> data){
-           fragments[index].updata(data);
-        }
 
         public Fragment getItem(int num) {
-            return new FragmentLesson();
+            return fragments[num];
         }
 
         @Override
@@ -116,23 +225,19 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
         @Override
         public CharSequence getPageTitle(int position) {
             int temp = position+1;
-            return "星期 " + position;
+            return "星期 " + temp;
+        }
+        /**
+         * 用于更新数据
+         * @param index
+         * @param data
+         */
+        public void update(int index,List<HashMap<String,Object>> data){
+            fragments[index].update(data);
         }
 
     }
 
-    /**
-     * 用于返回主线程并Toast的方法
-     *
-     */
-    public void Toast(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(Myclass.this, "读取信息失败，请重新登录", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     /**
      * 用于界面的左上角返回按钮
