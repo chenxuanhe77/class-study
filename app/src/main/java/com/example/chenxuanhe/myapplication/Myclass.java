@@ -74,9 +74,9 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
         Calendar calendar = Calendar.getInstance();
         int temp = calendar.get(Calendar.DAY_OF_WEEK)-2;
         pager.setCurrentItem(temp);
-
-        Map<String,String> LoginInfo = Info.getLoginInfo(Myclass.this);
         //Toast(LoginInfo.get("mToken"));
+        Map<String,String> LoginInfo = Info.getLoginInfo(Myclass.this);
+
         getLesson(LoginInfo.get("mToken"));
     }
 
@@ -129,44 +129,45 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
             JSONObject object = jsonObject.getJSONObject("data");
             JSONObject data = object.getJSONObject("data");
             WeekCourse = new List[7];
-            for(int i = 1; i < 7 ;i ++){
+            for(int i = 1; i <= 7 ;i ++){
                 WeekCourse[i -1] = new ArrayList<>();
-                JSONObject Day = data.getJSONObject("" + i);
+                JSONObject day = data.getJSONObject("" + i);
                 List<HashMap<String,Object>> DayClass = new ArrayList<>();
-                for(int m =1;m <=5;m ++){
-                    JSONArray lesson = Day.getJSONArray(""+m);
+                for(int  n=1;n <=5;n ++){
+                    JSONArray lesson = day.getJSONArray(""+n);
 
-                    for(int n = 0; n<lesson.length();n++){
-                        JSONObject datas = (JSONObject) lesson.get(n);
+                    for(int m= 0; m<lesson.length();m++){
+                        JSONObject datas = (JSONObject) lesson.get(m);
                         String name = datas.getString("course");
                         String time = datas.getString("time");
                         String room = datas.getString("classroom");
 
                         HashMap<String,Object> ClassInfo = new HashMap<>();
-                        ClassInfo.put("Num",m);
+                        ClassInfo.put("Num",n);
                         ClassInfo.put("Name",name);
                         ClassInfo.put("Time",time);
                         ClassInfo.put("Room",room);
 
                         DayClass.add(ClassInfo);
                     }
-                }WeekCourse[i-1] = DayClass;
+                }
+                WeekCourse[i-1] = DayClass;
             }
 
             Log.d("cxh","getInfo:data end");
             for (int i = 0;i <7;i++){
-                final int FBI = i;
+                final int finalI = i;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.update(FBI, WeekCourse[FBI]);
+                        adapter.update(finalI, WeekCourse[finalI]);
                     }
                 });
             }
-            Log.d("cxh","getInfo:data end");
 
         }catch (Exception e){
-            e.printStackTrace();}
+            e.printStackTrace();
+        }
     }
 
     /**

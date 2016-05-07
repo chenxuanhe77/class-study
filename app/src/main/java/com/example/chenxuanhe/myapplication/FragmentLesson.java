@@ -2,6 +2,7 @@ package com.example.chenxuanhe.myapplication;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import java.util.List;
 public class FragmentLesson extends Fragment{
 
     private RecyclerView recyclerView;
-    private List<HashMap<String, Object>> data = new ArrayList<>();
+    private List<HashMap<String, Object>> data = new ArrayList<>(0);
 
     /**
      创新视图
@@ -84,7 +85,8 @@ public class FragmentLesson extends Fragment{
 
         @Override
         public int getItemCount() {
-            return data == null ? null : data.size();
+//            Log.i("WZY",""+data.size());
+            return data == null ? 0 : data.size();
         }
     }
 
