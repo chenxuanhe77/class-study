@@ -143,7 +143,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_logoff) {
             Intent intent = new Intent();
             intent.setClass(MainActivity.this,Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            Toast.makeText(MainActivity.this, "请输入您的账号密码吧~咻", Toast.LENGTH_SHORT).show();
+
 
         } else if (id == R.id.nav_logout) {
 
