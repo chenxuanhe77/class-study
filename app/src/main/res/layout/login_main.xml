@@ -48,14 +48,14 @@
         <Button
             android:id="@+id/login"
             android:text="@string/login"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:onClick="onClickButton"
             />
         <Button
             android:id="@+id/quit"
             android:text="@string/logout"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"/>
         <TextView />
     </TableRow>

@@ -37,9 +37,6 @@ public class StreamTools {
         }
         is.close();
         return outputStream.toByteArray();
-
-
     }
-
 
 }

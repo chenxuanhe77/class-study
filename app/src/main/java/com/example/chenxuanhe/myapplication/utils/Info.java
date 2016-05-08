@@ -61,7 +61,6 @@ public class Info {
      *
      *
      * * */
-
     public static boolean saveUserInfo(Context context,String mID,String mName,
                                        String mTell,String mAvatar,String mQQ){
         SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
@@ -74,24 +73,6 @@ public class Info {
         editor.commit();
         return  true;
     }
-    /**
-     * 课程表的缓存
-     * 用于保存课表信息缓存
-     * 方便下一次查询
-     * */
-    public static boolean saveClassInfo(Context context,String mTime, String mClassroom,
-                                        String mWeeks,String mCourse){
-        SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = wc.edit();
-        editor.putString("infoTime", mTime);         // 周数
-        editor.putString("infoClassroom", mClassroom);  //教室
-        editor.putString("infoWeeks", mWeeks);      //0011110101010
-        editor.putString("infoCourse", mCourse);     //课程名
-        editor.commit();
-        return true;
-    }
-
-
 
     /**
      * 用于读取课表信息

@@ -223,7 +223,6 @@ public class Mycard extends AppCompatActivity {
 
     }
 
-
     /**
      * 用于actionbar返回页面功能
      *

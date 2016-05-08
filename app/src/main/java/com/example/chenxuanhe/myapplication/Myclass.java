@@ -1,5 +1,6 @@
 package com.example.chenxuanhe.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -70,11 +71,9 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
                             .setTabListener(this)
             );
         }
-
         Calendar calendar = Calendar.getInstance();
         int temp = calendar.get(Calendar.DAY_OF_WEEK)-2;
         pager.setCurrentItem(temp);
-        //Toast(LoginInfo.get("mToken"));
         Map<String,String> LoginInfo = Info.getLoginInfo(Myclass.this);
 
         getLesson(LoginInfo.get("mToken"));
@@ -98,9 +97,11 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
                                 getInfo(jsonObject);
                                 break;
                             case 1:
-                                Toast(message);
+                                setToast(message);
                                 break;
                             case 2:
+                                setToast(""+"账号异常，请重新登录");
+                                relogin();
                                 break;
                             default:
                                 break;
@@ -110,7 +111,7 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
                         e.printStackTrace();
                     }
                 }else {
-                    Toast("信息有误，请重新登录");
+                    setToast("信息有误，请重新登录");
                 }
             }
         }.start();
@@ -164,7 +165,6 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
                     }
                 });
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -174,7 +174,7 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
      * 用于返回主线程并Toast的方法
      *
      */
-    public void Toast(final String message){
+    public void setToast(final String message){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -182,6 +182,22 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
             }
         });
     }
+
+    /**
+     * 用于token出现错误，删除token并且重新登录获取token
+     */
+    public void relogin(){
+        Info.deleteUserInfo(Myclass.this);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent();
+                intent.setClass(Myclass.this,Login.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     @Override
     public void onTabSelected(MaterialTab tab) {
@@ -223,6 +239,9 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
             return 7;
         }
 
+        /**
+         *position 位置 是从0开始  所以让星期+1
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             int temp = position+1;

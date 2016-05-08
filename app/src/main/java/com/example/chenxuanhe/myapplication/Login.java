@@ -79,10 +79,10 @@ public class Login extends ActionBarActivity {
             public void run(){
                 final String result = LoginService.loginByGet(username,password);
                 if(result != null) {
-
                     try{
                         JSONTokener jsonTokener = new JSONTokener(result);
                         JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
+                        final String message = jsonObject.getString("message");
                         if(jsonObject.getInt("error")==0){
                             String token= jsonObject.getString("token");
                             boolean SaveSuccess = saveUserInfo(Login.this, username, token);
@@ -100,21 +100,23 @@ public class Login extends ActionBarActivity {
                                 });
                             }}
                         else{if(jsonObject.getInt("error")==1){
-                            final String message = jsonObject.getString("message");
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(Login.this,message, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                        }
+                           setToast(message);
+                          }}
                     }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
             }
         }.start();
+    }
+
+    public void setToast(final String message){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Login.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

@@ -82,9 +82,6 @@ public class MainActivity extends AppCompatActivity
     }}
 
 
-
-
-
     @Override
     public void onBackPressed() {
 
@@ -111,7 +108,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-
 
         if (id == R.id.action_settings) {
             return true;
@@ -180,14 +176,12 @@ public class MainActivity extends AppCompatActivity
         NetworkInfo networkInfo= connectivityManager.getActiveNetworkInfo();
         if(networkInfo==null||!networkInfo.isAvailable()){
             Toast.makeText(getApplicationContext(),"网络不可用",Toast.LENGTH_SHORT).show();
-            Map<String,String> userinfo = Info.getUserInfo(MainActivity.this);
         }else{
 
             /**
              * 开启一个新线程联网
              * 获取侧滑框的信息
              * */
-
             new Thread(){
                 public void  run(){
                     final String result = Netget.getUserInfo(mToken);

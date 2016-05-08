@@ -63,13 +63,13 @@ public class FragmentLesson extends Fragment{
         @Override
         public CourseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = inflater.inflate(R.layout.item_class, parent, false);
-            TypedValue typedValue = new TypedValue();
-            getActivity().getTheme().resolveAttribute(R.attr.selectableItemBackground, typedValue, true);
-            view.setBackgroundResource(typedValue.resourceId);
+            TypedValue typedValue = new TypedValue();//*
+            getActivity().getTheme().resolveAttribute(R.attr.selectableItemBackground, typedValue, true);//*
+            view.setBackgroundResource(typedValue.resourceId);//这三行全是自定义Attr风格样式
             return new CourseHolder(view);
         }
         /**
-         * 更换视图内容Bind
+         * 更换视图内容 Bind对应绑定
          * */
         @Override
         public void onBindViewHolder(CourseHolder holder, int position) {
@@ -83,15 +83,20 @@ public class FragmentLesson extends Fragment{
             holder.itemView.setClickable(true);
         }
 
+        /**
+         * 记住  int返回得湿0 不能是Null
+         * @return
+         */
         @Override
         public int getItemCount() {
-//            Log.i("WZY",""+data.size());
             return data == null ? 0 : data.size();
         }
     }
 
+    /**
+     * 给每一个TextView对应id绑定
+     */
     class CourseHolder extends RecyclerView.ViewHolder{
-
         TextView num;
         TextView name;
         TextView time;
