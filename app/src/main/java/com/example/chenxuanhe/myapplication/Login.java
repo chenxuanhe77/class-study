@@ -131,6 +131,10 @@ public class Login extends ActionBarActivity {
         System.exit(0);
     }
 
+    /**
+     *封装的一个Toast方法
+     * 可以返回主线程Toast
+     */
     public void setToast(final String message) {
         runOnUiThread(new Runnable() {
             @Override

@@ -13,14 +13,12 @@ import android.widget.Toast;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
 import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
-
 import java.util.Map;
 
 /**
  * Created by chenxuanhe on 2016/4/22.
  */
 public class MyInfo extends AppCompatActivity{
-
 
     private TextView myName;
     private  TextView myId;
@@ -44,8 +42,6 @@ public class MyInfo extends AppCompatActivity{
 
         StatusBarCompat.setStatusBarColor(this);
         pushInfo();
-
-
     }
 
     /**
@@ -59,12 +55,10 @@ public class MyInfo extends AppCompatActivity{
         myQQ.setText(userinfo.get("infoQQ"));
         myTel.setText(userinfo.get("infoTell"));
 
-
       /**
        * 在新线程联网获取图片
        * 将图片取下来放到bipmap里面
        * */
-
         new Thread(){
             public void run(){
                 try{

@@ -74,25 +74,4 @@ public class Info {
         return  true;
     }
 
-    /**
-     * 用于读取课表信息
-     * 目前与室友讨论认定缓存一周课表没用
-     *
-     * */
-    public static Map<String,String> getClassInfo(Context context){
-        SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        String mTime = wc.getString("infoTime", null);
-        String mClassroom = wc.getString("infoClassroom",null);
-        String mWeeks = wc.getString("infoWeeks",null);
-        String mCourse = wc.getString("infoCourse", null);
-        Map<String,String> classMap = new HashMap<>();
-        classMap.put("infoTime",mTime);
-        classMap.put("infoClassroom", mClassroom);
-        classMap.put("infoWeeks", mWeeks);
-        classMap.put("infoCourse", mCourse);
-        return classMap;
-    }
-
-
-
 }

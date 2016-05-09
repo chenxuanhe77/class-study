@@ -115,7 +115,6 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
                 }
             }
         }.start();
-
         return null;
     }
 
@@ -206,12 +205,10 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
 
     @Override
     public void onTabReselected(MaterialTab tab) {
-
     }
 
     @Override
     public void onTabUnselected(MaterialTab tab) {
-
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -257,7 +254,6 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
         }
 
     }
-
 
     /**
      * 用于界面的左上角返回按钮

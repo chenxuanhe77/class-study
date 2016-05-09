@@ -55,12 +55,13 @@ public class MainActivity extends AppCompatActivity
         });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, mDrawerLayout, mToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
         mNavigationView.setNavigationItemSelectedListener(this);
-
 
     Map<String,String> loginInfo = Info.getLoginInfo(MainActivity.this);
     if(loginInfo!=null){
@@ -68,23 +69,19 @@ public class MainActivity extends AppCompatActivity
             getInfo(loginInfo.get("mToken"));
             Toast.makeText(MainActivity.this,"亲，读到你的信息了呦！",Toast.LENGTH_SHORT).show();
         }else{
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this,Login.class);
-            startActivity(intent);
+            doIntent(Login.class);
             finish();
         }
     }else {
         Toast.makeText(MainActivity.this,"未读取到任何信息，请重新登录喔i",Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent();
-        intent.setClass(MainActivity.this,Login.class);
-        startActivity(intent);
+        Info.deleteUserInfo(MainActivity.this);
+        doIntent(Login.class);
         finish();
     }}
 
 
     @Override
     public void onBackPressed() {
-
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -96,67 +93,63 @@ public class MainActivity extends AppCompatActivity
       * */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        menu.add(0,1,0,R.string.what);
         return true;
     }
 
     /**
      * 点击MenuItem的事件
-     *
      * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
+        if (id ==1) {
+            Toast.makeText(MainActivity.this, "抱歉暂时想不到能用来点击干嘛喔~", Toast.LENGTH_SHORT).show();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    /**
+     *用于每个Activity的跳转
+     */
+    @SuppressWarnings("StatementWithEmptyBody")//对警告保持缄默
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.id_mycard) {
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this,Mycard.class);
-            startActivity(intent);
+           doIntent(Mycard.class);
         } else if (id == R.id.id_myclass) {
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this,Myclass.class);
-            startActivity(intent);
-
+           doIntent(Myclass.class);
         } else if (id == R.id.id_searchcard) {
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this,Searchcard.class);
-            startActivity(intent);
-
+           doIntent(Searchcard.class);
         } else if (id == R.id.id_mysetting) {
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this,Mysetting.class);
-            startActivity(intent);
-
+            doIntent(Mysetting.class);
         } else if (id == R.id.nav_logoff) {
             Intent intent = new Intent();
             intent.setClass(MainActivity.this,Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             Toast.makeText(MainActivity.this, "请输入您的账号密码吧~咻", Toast.LENGTH_SHORT).show();
-
-
         } else if (id == R.id.nav_logout) {
-
-           finish();
+            System.exit(0);
         }
-
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-        /**
+
+    /**
+     * 用于跳转方法
+     */
+    public void doIntent(Class fbi){
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this,fbi);
+        startActivity(intent);
+    }
+
+
+    /**
          * 点击头像显示个人信息
          * QQ Tell Name Avatar
          */

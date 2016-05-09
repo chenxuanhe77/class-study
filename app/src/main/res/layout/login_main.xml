@@ -55,6 +55,7 @@
         <Button
             android:id="@+id/quit"
             android:text="@string/logout"
+            android:textAllCaps="false"
             android:onClick="onClickLogout"
             android:layout_width="100dp"
             android:layout_height="wrap_content"/>

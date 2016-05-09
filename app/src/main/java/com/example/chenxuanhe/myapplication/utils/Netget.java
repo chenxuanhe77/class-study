@@ -1,12 +1,10 @@
 package com.example.chenxuanhe.myapplication.utils;
 
-
 import com.example.chenxuanhe.myapplication.StreamTools;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-
 
 /**
  * Created by chenxuanhe on 2016/4/22.
