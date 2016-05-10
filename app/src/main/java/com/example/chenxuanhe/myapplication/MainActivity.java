@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
-import com.tencent.android.tpush.XGPushManager;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -44,9 +43,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        //腾讯信鸽推送
+        /*//腾讯信鸽推送
         Context context = getApplicationContext();
-        XGPushManager.registerPush(context);
+        XGPushManager.registerPush(context);*/
 
         /**
          * 点击右下角fab事件
