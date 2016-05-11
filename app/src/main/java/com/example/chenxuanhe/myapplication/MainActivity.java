@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
+import com.mob.mobapi.MobAPI;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
 
+    private String APPKEY = "12ae915419880";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+        MobAPI.initSDK(this,APPKEY);
 
         /*//腾讯信鸽推送
         Context context = getApplicationContext();
