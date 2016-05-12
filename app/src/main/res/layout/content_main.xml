@@ -41,19 +41,40 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <Spinner
+            android:id="@+id/id_Province"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
+
+        <Spinner
+            android:id="@+id/id_City"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
+
+
+        <Spinner
+            android:id="@+id/id_District"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="城市" />
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
             android:text="温度" />
 
         <TextView
@@ -67,7 +88,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="陪她（）他一起看日出日落吧~"
+        android:text="陪她（他)一起看日出日落吧~"
         android:textColor="@color/colorAccent"
         android:textSize="16dp" />
 

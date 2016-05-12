@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,22 +19,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
+import com.mob.mobapi.APICallback;
 import com.mob.mobapi.MobAPI;
+import com.mob.mobapi.apis.Weather;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
+
+    private Spinner mProvince;
+    private Spinner mCity;
+    private Spinner mDistrict;
+    private ArrayList<HashMap<String,Object>> resultList;
 
     private String APPKEY = "12ae915419880";
 
@@ -51,6 +64,17 @@ public class MainActivity extends AppCompatActivity
         /*//腾讯信鸽推送
         Context context = getApplicationContext();
         XGPushManager.registerPush(context);*/
+
+        mProvince = (Spinner) findViewById(R.id.id_Province);
+        mProvince.setOnItemSelectedListener(this);
+        mCity = (Spinner) findViewById(R.id.id_City);
+        mCity.setOnItemSelectedListener(this);
+        mDistrict = (Spinner) findViewById(R.id.id_District);
+        mDistrict.setOnItemSelectedListener(this);
+
+        // 获取API实例，请求支持预报的城市列表
+        Weather api = (Weather) MobAPI.getAPI(Weather.NAME);
+        api.getSupportedCities(this);
 
         /**
          * 点击右下角fab事件
@@ -73,22 +97,31 @@ public class MainActivity extends AppCompatActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
-    Map<String,String> loginInfo = Info.getLoginInfo(MainActivity.this);
-    if(loginInfo!=null){
-        if (loginInfo.get("mToken")!=null){
-            getInfo(loginInfo.get("mToken"));
-            Toast.makeText(MainActivity.this,"亲，读到你的信息了呦！",Toast.LENGTH_SHORT).show();
-        }else{
+        getInfomToken();
+    }
+
+
+    /**
+     *用于提示是否得到token
+     */
+    public void getInfomToken(){
+        Map<String,String> loginInfo = Info.getLoginInfo(MainActivity.this);
+        if(loginInfo!=null){
+            if (loginInfo.get("mToken")!=null){
+                getInfo(loginInfo.get("mToken"));
+                Toast.makeText(MainActivity.this,"亲，读到你的信息了呦！",Toast.LENGTH_SHORT).show();
+            }else{
+                doIntent(Login.class);
+                finish();
+            }
+        }else {
+            Toast.makeText(MainActivity.this,"未读取到任何信息，请重新登录喔i",Toast.LENGTH_SHORT).show();
+            Info.deleteUserInfo(MainActivity.this);
             doIntent(Login.class);
             finish();
         }
-    }else {
-        Toast.makeText(MainActivity.this,"未读取到任何信息，请重新登录喔i",Toast.LENGTH_SHORT).show();
-        Info.deleteUserInfo(MainActivity.this);
-        doIntent(Login.class);
-        finish();
-    }}
 
+    }
 
     @Override
     public void onBackPressed() {
