@@ -55,6 +55,26 @@
             android:id="@+id/id_City"
             android:layout_width="50dp"
             android:layout_height="20dp"/>
+        <Spinner
+            android:id="@+id/id_City"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
+        <Spinner
+            android:id="@+id/id_City"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
+        <Spinner
+            android:id="@+id/id_City"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
+        <Spinner
+            android:id="@+id/id_City"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
+        <Spinner
+            android:id="@+id/id_City"
+            android:layout_width="50dp"
+            android:layout_height="20dp"/>
 
 
         <Spinner
