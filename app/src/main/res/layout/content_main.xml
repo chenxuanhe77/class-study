@@ -82,25 +82,28 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:text="湿度" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="" />
-
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="陪她（他)一起看日出日落吧~"
+        android:textColor="@color/colorAccent"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="陪她（他)一起看日出日落吧~"
+        android:textColor="@color/colorAccent"
+        android:textSize="16dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="陪她（他)一起看日出日落吧~"
+        android:textColor="@color/colorAccent"
+        android:textSize="16dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
