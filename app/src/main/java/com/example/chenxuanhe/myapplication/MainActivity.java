@@ -27,16 +27,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
+import com.google.gson.Gson;
 import com.mob.mobapi.API;
 import com.mob.mobapi.APICallback;
 import com.mob.mobapi.MobAPI;
 import com.mob.mobapi.apis.Weather;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
@@ -44,10 +47,9 @@ public class MainActivity extends AppCompatActivity
 
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
+    private WeatherBean mWeatherBean;
 
-    private Spinner mProvince;
-    private Spinner mCity;
-    private Spinner mDistrict;
+
     private ArrayList<HashMap<String,Object>> resultList;
 
     private String APPKEY = "12ae915419880";
@@ -67,26 +69,23 @@ public class MainActivity extends AppCompatActivity
         Context context = getApplicationContext();
         XGPushManager.registerPush(context);*/
 
-      /*  mProvince = (Spinner) findViewById(R.id.id_Province);
-        mProvince.setOnItemSelectedListener(this);
-        mCity = (Spinner) findViewById(R.id.id_City);
-        mCity.setOnItemSelectedListener(this);
-        mDistrict = (Spinner) findViewById(R.id.id_District);
-        mDistrict.setOnItemSelectedListener(this);*/
 
-        // 获取API实例，请求支持预报的城市列表
+        // 获取API实例，请求湘潭的所有有关数据
         Weather api = (Weather) MobAPI.getAPI(Weather.NAME);
         api.queryByCityName("湘潭", new APICallback() {
             @Override
             public void onSuccess(API api, int i, Map<String, Object> map) {
-                Log.i("WZY" , map.toString());
+                Object result = map.get("result").toString();
+                //调用该方法，用于显示数据
+                onWeatherDisplay(map);
+                Log.i("WZY",""+result);
             }
-
             @Override
             public void onError(API api, int i, Throwable throwable) {
                 Log.i("WZY","ERROR");
             }
         });
+
 
         /**
          * 点击右下角fab事件
@@ -280,6 +279,17 @@ public class MainActivity extends AppCompatActivity
             }.start();
 
         }
+
+    }
+
+    private void onWeatherDisplay(Map<String,Object>  result){
+        TextView mWeek = (TextView) findViewById(R.id.mweek);
+        TextView mDate = (TextView) findViewById(R.id.mdate);
+        @SuppressWarnings("unchecked")
+        ArrayList<HashMap<String,Object>> results = (ArrayList<HashMap<String,Object>>) result.get("result");
+        HashMap<String,Object> weather = results.get(0);
+        mDate.setText(com.mob.tools.utils.R.toString(weather.get("date")));
+        mWeek.setText(com.mob.tools.utils.R.toString(weather.get("week")));
 
     }
 

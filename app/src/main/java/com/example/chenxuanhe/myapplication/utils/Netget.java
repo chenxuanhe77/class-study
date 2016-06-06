@@ -12,6 +12,8 @@ import java.net.URLEncoder;
 public class Netget {
 
     final static String BaseURL = "http://api.13550101.com/";
+    final static String WeatherURL = "http://apicloud.mob.com/v1/weather/query?" +
+            "key=12ae915419880&city=湘潭&province=湖南";
 
     /**
      * 封装网络
