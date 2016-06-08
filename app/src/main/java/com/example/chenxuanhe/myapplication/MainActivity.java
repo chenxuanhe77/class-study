@@ -9,7 +9,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,37 +19,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
-import com.google.gson.Gson;
 import com.mob.mobapi.API;
 import com.mob.mobapi.APICallback;
 import com.mob.mobapi.MobAPI;
 import com.mob.mobapi.apis.Weather;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
-    private WeatherBean mWeatherBean;
 
-
-    private ArrayList<HashMap<String,Object>> resultList;
 
     private String APPKEY = "12ae915419880";
 
@@ -63,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        MobAPI.initSDK(this,APPKEY);
+        MobAPI.initSDK(this, APPKEY);
 
         /*//腾讯信鸽推送
         Context context = getApplicationContext();
@@ -78,11 +70,12 @@ public class MainActivity extends AppCompatActivity
                 Object result = map.get("result").toString();
                 //调用该方法，用于显示数据
                 onWeatherDisplay(map);
-                Log.i("WZY",""+result);
+                Log.i("WZY", "" + result);
             }
+
             @Override
             public void onError(API api, int i, Throwable throwable) {
-                Log.i("WZY","ERROR");
+                Log.i("WZY", "ERROR");
             }
         });
 
@@ -108,25 +101,27 @@ public class MainActivity extends AppCompatActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        getTime();
+
         getInfomToken();
     }
 
 
     /**
-     *用于提示是否得到token
+     * 用于提示是否得到token
      */
-    public void getInfomToken(){
-        Map<String,String> loginInfo = Info.getLoginInfo(MainActivity.this);
-        if(loginInfo!=null){
-            if (loginInfo.get("mToken")!=null){
+    public void getInfomToken() {
+        Map<String, String> loginInfo = Info.getLoginInfo(MainActivity.this);
+        if (loginInfo != null) {
+            if (loginInfo.get("mToken") != null) {
                 getInfo(loginInfo.get("mToken"));
-                Toast.makeText(MainActivity.this,"亲，读到你的信息了呦！",Toast.LENGTH_SHORT).show();
-            }else{
+                Toast.makeText(MainActivity.this, "亲，读到你的信息了呦！", Toast.LENGTH_SHORT).show();
+            } else {
                 doIntent(Login.class);
                 finish();
             }
-        }else {
-            Toast.makeText(MainActivity.this,"未读取到任何信息，请重新登录喔i",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, "未读取到任何信息，请重新登录喔i", Toast.LENGTH_SHORT).show();
             Info.deleteUserInfo(MainActivity.this);
             doIntent(Login.class);
             finish();
@@ -142,22 +137,23 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-     /**
-      * 用于创建MenuIItem
-      * */
+
+    /**
+     * 用于创建MenuIItem
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0,1,0,R.string.what);
+        menu.add(0, 1, 0, R.string.what);
         return true;
     }
 
     /**
      * 点击MenuItem的事件
-     * */
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id ==1) {
+        if (id == 1) {
             Toast.makeText(MainActivity.this, "抱歉暂时想不到能用来点击干嘛喔~", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -165,7 +161,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     *用于每个Activity的跳转
+     * 用于每个Activity的跳转
      */
     @SuppressWarnings("StatementWithEmptyBody")//对警告保持缄默
     @Override
@@ -173,16 +169,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.id_mycard) {
-           doIntent(Mycard.class);
+            doIntent(Mycard.class);
         } else if (id == R.id.id_myclass) {
-           doIntent(Myclass.class);
+            doIntent(Myclass.class);
         } else if (id == R.id.id_searchcard) {
-           doIntent(Searchcard.class);
+            doIntent(Searchcard.class);
         } else if (id == R.id.id_mysetting) {
             doIntent(Mysetting.class);
         } else if (id == R.id.nav_logoff) {
             Intent intent = new Intent();
-            intent.setClass(MainActivity.this,Login.class);
+            intent.setClass(MainActivity.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             Toast.makeText(MainActivity.this, "请输入您的账号密码吧~咻", Toast.LENGTH_SHORT).show();
@@ -196,50 +192,51 @@ public class MainActivity extends AppCompatActivity
     /**
      * 用于跳转方法
      */
-    public void doIntent(Class fbi){
+    public void doIntent(Class fbi) {
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this,fbi);
+        intent.setClass(MainActivity.this, fbi);
         startActivity(intent);
     }
 
 
     /**
-         * 点击头像显示个人信息
-         * QQ Tell Name Avatar
-         */
-    public void onClickImage(View view){
+     * 点击头像显示个人信息
+     * QQ Tell Name Avatar
+     */
+    public void onClickImage(View view) {
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this,MyInfo.class);
+        intent.setClass(MainActivity.this, MyInfo.class);
         startActivity(intent);
     }
-         /**
-          * 侧滑框
-          * 获得信息
-          * */
-    public void getInfo(final String mToken){
+
+    /**
+     * 侧滑框
+     * 获得信息
+     */
+    public void getInfo(final String mToken) {
         View view = mNavigationView.inflateHeaderView(R.layout.nav_header_main);
-        final ImageView mAvatar = (ImageView)view.findViewById(R.id.id_imageView);
-        final TextView mId  = (TextView)view.findViewById(R.id.id_id);
-        final TextView mName = (TextView)view.findViewById(R.id.id_name);
+        final ImageView mAvatar = (ImageView) view.findViewById(R.id.id_imageView);
+        final TextView mId = (TextView) view.findViewById(R.id.id_id);
+        final TextView mName = (TextView) view.findViewById(R.id.id_name);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo= connectivityManager.getActiveNetworkInfo();
-        if(networkInfo==null||!networkInfo.isAvailable()){
-            Toast.makeText(getApplicationContext(),"网络不可用",Toast.LENGTH_SHORT).show();
-        }else{
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isAvailable()) {
+            Toast.makeText(getApplicationContext(), "网络不可用", Toast.LENGTH_SHORT).show();
+        } else {
 
             /**
              * 开启一个新线程联网
              * 获取侧滑框的信息
              * */
-            new Thread(){
-                public void  run(){
+            new Thread() {
+                public void run() {
                     final String result = Netget.getUserInfo(mToken);
-                    if(result!=null){
-                        try{
+                    if (result != null) {
+                        try {
                             JSONTokener jsonTokener = new JSONTokener(result);
-                            JSONObject jsonObject = (JSONObject)  jsonTokener.nextValue();
-                            if(jsonObject.getInt("error")==0){
+                            JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
+                            if (jsonObject.getInt("error") == 0) {
                                 JSONObject object = new JSONObject(result);
                                 String infoAvatar = object.getString("avatar");
                                 String infoID = object.getString("xuehao");
@@ -247,17 +244,17 @@ public class MainActivity extends AppCompatActivity
                                 String infoTell = object.getString("tel");
                                 String infoName = object.getString("name");
                                 boolean isSaveSuccess = Info.saveUserInfo(MainActivity.this, infoID,
-                                        infoName,infoTell,infoAvatar,infoQQ);
+                                        infoName, infoTell, infoAvatar, infoQQ);
                                 byte[] Avatar = Netget.getUserAvatar(infoAvatar);
-                                final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar,0,Avatar.length);
-                                if(isSaveSuccess){
+                                final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar, 0, Avatar.length);
+                                if (isSaveSuccess) {
 
                                     /**返回主线程*/
 
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Map<String,String> userinfo = Info.getUserInfo(MainActivity.this);
+                                            Map<String, String> userinfo = Info.getUserInfo(MainActivity.this);
                                             mAvatar.setImageBitmap(bitmap);
                                             mId.setText(userinfo.get("infoID"));
                                             mName.setText(userinfo.get("infoName"));
@@ -272,24 +269,64 @@ public class MainActivity extends AppCompatActivity
                                     });
                                 }
                             }
-                        }catch (Exception e)
-                        {e.printStackTrace();}
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }.start();
-
         }
-
     }
 
-    private void onWeatherDisplay(Map<String,Object>  result){
-        TextView mWeek = (TextView) findViewById(R.id.mweek);
-        TextView mDate = (TextView) findViewById(R.id.mdate);
+    /**
+     * 用于TextView获取接口数据显示
+     * @param result
+     */
+    private void onWeatherDisplay(Map<String, Object> result) {
+        TextView mWeek = (TextView) findViewById(R.id.week);
+        TextView mDate = (TextView) findViewById(R.id.date);
+        TextView mProvince = (TextView) findViewById(R.id.province);
+        TextView mCity = (TextView) findViewById(R.id.city);
+        TextView mDayTime = (TextView) findViewById(R.id.dayTime);
+        TextView mNight = (TextView) findViewById(R.id.night);
+        TextView mColdIndex = (TextView) findViewById(R.id.coldIndex);
+        TextView mDressingIndex = (TextView) findViewById(R.id.dressingIndex);
+        TextView mExerciseIndex = (TextView) findViewById(R.id.exerciseIndex);
+        TextView mTemperature = (TextView) findViewById(R.id.temperature);
+        TextView mHumidity = (TextView) findViewById(R.id.humidity);
+        TextView mWind = (TextView) findViewById(R.id.wind);
+        TextView mSunrise = (TextView) findViewById(R.id.sunrise);
+        TextView mSunset = (TextView) findViewById(R.id.sunset);
+
+        TextView mWeather = (TextView) findViewById(R.id.weather);
         @SuppressWarnings("unchecked")
-        ArrayList<HashMap<String,Object>> results = (ArrayList<HashMap<String,Object>>) result.get("result");
-        HashMap<String,Object> weather = results.get(0);
+        ArrayList<HashMap<String, Object>> results = (ArrayList<HashMap<String, Object>>) result.get("result");
+        HashMap<String, Object> weather = results.get(0);
         mDate.setText(com.mob.tools.utils.R.toString(weather.get("date")));
         mWeek.setText(com.mob.tools.utils.R.toString(weather.get("week")));
+        mProvince.setText(com.mob.tools.utils.R.toString(weather.get("province")));
+        mCity.setText(com.mob.tools.utils.R.toString(weather.get("city")));
+        mDayTime.setText(com.mob.tools.utils.R.toString(weather.get("dayTime")));
+        mNight.setText(com.mob.tools.utils.R.toString(weather.get("night")));
+        mColdIndex.setText(com.mob.tools.utils.R.toString(weather.get("coldIndex")));
+        mDressingIndex.setText(com.mob.tools.utils.R.toString(weather.get("dressingIndex")));
+        mExerciseIndex.setText(com.mob.tools.utils.R.toString(weather.get("exerciseIndex")));
+        mTemperature.setText(com.mob.tools.utils.R.toString(weather.get("temperature")));
+        mHumidity.setText(com.mob.tools.utils.R.toString(weather.get("humidity")));
+        mWind.setText(com.mob.tools.utils.R.toString(weather.get("wind")));
+        mSunrise.setText(com.mob.tools.utils.R.toString(weather.get("sunrise")));
+        mSunset.setText(com.mob.tools.utils.R.toString(weather.get("sunset")));
+        mWeather.setText(com.mob.tools.utils.R.toString(weather.get("weather")));
+    }
+
+    /**
+     * 完成首页时间的的显示
+     */
+    public void getTime() {
+        TextView mNowTime = (TextView) findViewById(R.id.nowTime);
+        Date date = new Date();
+        DateFormat dateformat = new SimpleDateFormat("hh:mm:ss");
+        mNowTime.setText(dateformat.format(date));
 
     }
 
