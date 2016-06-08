@@ -302,21 +302,29 @@ public class MainActivity extends AppCompatActivity
         @SuppressWarnings("unchecked")
         ArrayList<HashMap<String, Object>> results = (ArrayList<HashMap<String, Object>>) result.get("result");
         HashMap<String, Object> weather = results.get(0);
+
+        ArrayList<HashMap<String,Object>> futures = (ArrayList<HashMap<String,Object>>) weather.get("future");
+        HashMap<String,Object> day = futures.get(0);
+        Log.i("xxx",""+day);
+
         mDate.setText(com.mob.tools.utils.R.toString(weather.get("date")));
         mWeek.setText(com.mob.tools.utils.R.toString(weather.get("week")));
         mProvince.setText(com.mob.tools.utils.R.toString(weather.get("province")));
         mCity.setText(com.mob.tools.utils.R.toString(weather.get("city")));
-        mDayTime.setText(com.mob.tools.utils.R.toString(weather.get("dayTime")));
-        mNight.setText(com.mob.tools.utils.R.toString(weather.get("night")));
         mColdIndex.setText(com.mob.tools.utils.R.toString(weather.get("coldIndex")));
         mDressingIndex.setText(com.mob.tools.utils.R.toString(weather.get("dressingIndex")));
         mExerciseIndex.setText(com.mob.tools.utils.R.toString(weather.get("exerciseIndex")));
-        mTemperature.setText(com.mob.tools.utils.R.toString(weather.get("temperature")));
+
         mHumidity.setText(com.mob.tools.utils.R.toString(weather.get("humidity")));
         mWind.setText(com.mob.tools.utils.R.toString(weather.get("wind")));
         mSunrise.setText(com.mob.tools.utils.R.toString(weather.get("sunrise")));
         mSunset.setText(com.mob.tools.utils.R.toString(weather.get("sunset")));
         mWeather.setText(com.mob.tools.utils.R.toString(weather.get("weather")));
+
+
+        mDayTime.setText(com.mob.tools.utils.R.toString(day.get("dayTime")));
+        mNight.setText(com.mob.tools.utils.R.toString(day.get("night")));
+        mTemperature.setText(com.mob.tools.utils.R.toString(day.get("temperature")));
     }
 
     /**
