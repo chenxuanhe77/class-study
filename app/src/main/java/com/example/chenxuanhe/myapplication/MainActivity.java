@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -103,13 +104,15 @@ public class MainActivity extends AppCompatActivity
 
         getTime();
 
-        getInfomToken();
+        //getInfomToken();
     }
 
 
     /**
      * 用于提示是否得到token
      */
+
+    /*
     public void getInfomToken() {
         Map<String, String> loginInfo = Info.getLoginInfo(MainActivity.this);
         if (loginInfo != null) {
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -297,7 +300,6 @@ public class MainActivity extends AppCompatActivity
         TextView mWind = (TextView) findViewById(R.id.wind);
         TextView mSunrise = (TextView) findViewById(R.id.sunrise);
         TextView mSunset = (TextView) findViewById(R.id.sunset);
-
         TextView mWeather = (TextView) findViewById(R.id.weather);
         @SuppressWarnings("unchecked")
         ArrayList<HashMap<String, Object>> results = (ArrayList<HashMap<String, Object>>) result.get("result");
@@ -321,10 +323,27 @@ public class MainActivity extends AppCompatActivity
         mSunset.setText(com.mob.tools.utils.R.toString(weather.get("sunset")));
         mWeather.setText(com.mob.tools.utils.R.toString(weather.get("weather")));
 
-
         mDayTime.setText(com.mob.tools.utils.R.toString(day.get("dayTime")));
         mNight.setText(com.mob.tools.utils.R.toString(day.get("night")));
         mTemperature.setText(com.mob.tools.utils.R.toString(day.get("temperature")));
+
+        String weath = mWeather.getText().toString();
+
+        getweather(weath);
+    }
+
+
+    public void  getweather(String weath)
+    {
+        ImageView mbjtu = (ImageView) findViewById(R.id.bjtu);
+
+        switch (weath)
+        {
+            case "晴":
+                mbjtu.setImageResource(R.drawable.qing);
+                break;
+            case "":
+        }
     }
 
     /**
