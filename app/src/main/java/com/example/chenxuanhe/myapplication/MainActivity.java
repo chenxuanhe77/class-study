@@ -1,5 +1,6 @@
 package com.example.chenxuanhe.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.ViewDragHelper;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -30,6 +33,7 @@ import com.mob.mobapi.MobAPI;
 import com.mob.mobapi.apis.Weather;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,8 +46,6 @@ public class MainActivity extends AppCompatActivity
 
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
-
-
     private String APPKEY = "12ae915419880";
 
     @Override
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
 
         getTime();
+
+        setDrawerLeftEdgeSize(MainActivity.this,mDrawerLayout,0.4f);
 
         getInfomToken();
     }
@@ -336,49 +340,58 @@ public class MainActivity extends AppCompatActivity
     {
         ImageView mbjtu = (ImageView) findViewById(R.id.bjtu);
 
-        switch (weath)
-        {
-            case "晴":
-                mbjtu.setImageResource(R.drawable.qing);
-                break;
-            case "多云":
-                mbjtu.setImageResource(R.drawable.duoyun);
-                break;
-            case "少云":
-                mbjtu.setImageResource(R.drawable.shaoyun);
-                break;
-            case "阴":
-                mbjtu.setImageResource(R.drawable.yin);
-                break;
-            case "小雨":
-                mbjtu.setImageResource(R.drawable.xiaoyu);
-                break;
-            case "雨":
-                mbjtu.setImageResource(R.drawable.yu);
-                break;
-            case "雷雨":
-                mbjtu.setImageResource(R.drawable.leiyu);
-                break;
-            case "中雨":
-                mbjtu.setImageResource(R.drawable.zhongyu);
-                break;
-            case "阵雨":
-                mbjtu.setImageResource(R.drawable.zhenyu);
-                break;
-            case "小雪":
-                mbjtu.setImageResource(R.drawable.xiaoxue);
-                break;
-            case "雨夹雪":
-                mbjtu.setImageResource(R.drawable.yujiaxue);
-                break;
-            case "阵雪":
-                mbjtu.setImageResource(R.drawable.zhenxue);
-                break;
-            case "霾":
-                mbjtu.setImageResource(R.drawable.mai);
-                break;
-            default:
-                break;
+        if (weath!=null) {
+            switch (weath) {
+                case "晴":
+                    mbjtu.setImageResource(R.drawable.qing);
+                    break;
+                case "多云":
+                    mbjtu.setImageResource(R.drawable.duoyun);
+                    break;
+                case "少云":
+                    mbjtu.setImageResource(R.drawable.shaoyun);
+                    break;
+                case "阴":
+                    mbjtu.setImageResource(R.drawable.yin);
+                    break;
+                case "小雨":
+                    mbjtu.setImageResource(R.drawable.xiaoyu);
+                    break;
+                case "雨":
+                    mbjtu.setImageResource(R.drawable.yu);
+                    break;
+                case "雷雨":
+                    mbjtu.setImageResource(R.drawable.leiyu);
+                    break;
+                case "零散雷雨":
+                    mbjtu.setImageResource(R.drawable.leiyu);
+                    break;
+                case "中雨":
+                    mbjtu.setImageResource(R.drawable.zhongyu);
+                    break;
+                case "阵雨":
+                    mbjtu.setImageResource(R.drawable.zhenyu);
+                    break;
+                case "零散阵雨":
+                    mbjtu.setImageResource(R.drawable.zhenyu);
+                    break;
+                case "小雪":
+                    mbjtu.setImageResource(R.drawable.xiaoxue);
+                    break;
+                case "雨夹雪":
+                    mbjtu.setImageResource(R.drawable.yujiaxue);
+                    break;
+                case "阵雪":
+                    mbjtu.setImageResource(R.drawable.zhenxue);
+                    break;
+                case "霾":
+                    mbjtu.setImageResource(R.drawable.mai);
+                    break;
+                default:
+                    break;
+            }
+        }else {
+            Toast.makeText(MainActivity.this, "没有接到到天气的数据类型喔0.0~", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -391,6 +404,41 @@ public class MainActivity extends AppCompatActivity
         DateFormat dateformat = new SimpleDateFormat("hh:mm:ss");
         mNowTime.setText(dateformat.format(date));
 
+    }
+
+    /**
+     *改变侧滑栏的触摸滑动范围
+     * 三个参数
+     */
+    public static void setDrawerLeftEdgeSize(Activity activity,
+                                             DrawerLayout drawerLayout,
+                                             float displayWidthPercentage)
+    {
+        if (activity == null || drawerLayout == null) return;
+        try {
+            Field leftDraggerField = drawerLayout.getClass().getDeclaredField("mLeftDragger");
+            leftDraggerField.setAccessible(true);
+            ViewDragHelper leftDragger = (ViewDragHelper) leftDraggerField.get(drawerLayout);
+            Field edgeSizeField = leftDragger.getClass().getDeclaredField("mEdgeSize");
+            edgeSizeField.setAccessible(true);
+            int edgeSize = edgeSizeField.getInt(leftDragger);
+            DisplayMetrics dm = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+            edgeSizeField.setInt(leftDragger,
+                    Math.max(edgeSize, (int) (dm.widthPixels * displayWidthPercentage)));
+        }
+        catch (NoSuchFieldException e)
+        {
+            // ignore
+        }
+        catch (IllegalArgumentException e)
+        {
+            // ignore
+        }
+        catch (Exception e)
+        {
+            // ignore
+        }
     }
 
 }
