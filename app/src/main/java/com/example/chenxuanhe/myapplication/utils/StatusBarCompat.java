@@ -19,7 +19,7 @@ public class StatusBarCompat {
     public static final String TAG = StatusBarCompat.class.getName();
 
     public static final int COLOR_DEFAULT_WHITE = Color.parseColor("#FFFFFFFF");
-    public static final int COLOR_DEFAULT_PINK = Color.parseColor("#FFEF4968");
+    public static final int COLOR_DEFAULT_PINK = Color.parseColor("#F0F8FF");
 
     public static void setStatusBarColor(Activity activity) {
         setStatusBarColor(activity, COLOR_DEFAULT_PINK);
@@ -39,15 +39,15 @@ public class StatusBarCompat {
         ViewGroup mContentView = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //First translucent status bar.
+            //第一个半透明状态栏
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //After LOLLIPOP not translucent status bar
+                //不是透明状态后
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                //Then call setStatusBarColor.
+                //通知 setStatusBarColor.
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(statusColor);
-                //set child View not fill the system window
+                //设置子视图不填充系统窗口
                 View mChildView = mContentView.getChildAt(0);
                 if (mChildView != null) {
                     ViewCompat.setFitsSystemWindows(mChildView, true);
@@ -58,20 +58,20 @@ public class StatusBarCompat {
                 View mChildView = mContentView.getChildAt(0);
                 if (mChildView != null) {
                     FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mChildView.getLayoutParams();
-                    //if margin top has already set, just skip.
+                    //如果边缘顶部已经设置，只跳过.
                     if (lp != null && lp.topMargin < statusBarHeight && lp.height != statusBarHeight) {
-                        //do not use fitsSystemWindows
+                        //不使用 fitsSystemWindows
                         ViewCompat.setFitsSystemWindows(mChildView, false);
-                        //add margin to content
+                        //添加内容到内容
                         lp.topMargin += statusBarHeight;
                         mChildView.setLayoutParams(lp);
                     }
                 }
 
-                //Before LOLLIPOP create a fake status bar View.
+                //创建一个虚拟的状态栏
                 View statusBarView = mContentView.getChildAt(0);
                 if (statusBarView != null && statusBarView.getLayoutParams() != null && statusBarView.getLayoutParams().height == statusBarHeight) {
-                    //if fake status bar view exist, we can setBackgroundColor and return.
+                    //如果假状态栏视图存在，我们可以设置TabHost的背景颜色和回报
                     statusBarView.setBackgroundColor(statusColor);
                     return;
                 }
@@ -95,7 +95,7 @@ public class StatusBarCompat {
         Window window = activity.getWindow();
         ViewGroup mContentView = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
 
-        //set child View not fill the system window
+        //设置子视图不填充系统窗口
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
             ViewCompat.setFitsSystemWindows(mChildView, false);
@@ -104,10 +104,10 @@ public class StatusBarCompat {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int statusBarHeight = getStatusBarHeight(activity);
 
-            //First translucent status bar.
+            //第一个半透明状态栏
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //After LOLLIPOP just set LayoutParams.
+                //布局参数
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 if (hideStatusBarBackground) {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -115,13 +115,13 @@ public class StatusBarCompat {
                 } else {
                     window.setStatusBarColor(Color.parseColor("#55000000"));
                 }
-                //must call requestLayout, otherwise it will have space in screen bottom
+                //必须调用其requestLayout方法，否则会在屏幕底部有空间
                 if (mChildView != null) {
                     ViewCompat.requestApplyInsets(mChildView);
                 }
             } else {
                 if (mChildView != null && mChildView.getLayoutParams() != null && mChildView.getLayoutParams().height == statusBarHeight) {
-                    //Before LOLLIPOP need remove fake status bar view.
+                    //去除状态栏视图.
                     mContentView.removeView(mChildView);
                     mChildView = mContentView.getChildAt(0);
                 }
@@ -137,7 +137,7 @@ public class StatusBarCompat {
         }
     }
 
-    //Get status bar height
+    //获得状态栏高度
     public static int getStatusBarHeight(Context context) {
         int result = 0;
         int resId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -147,7 +147,7 @@ public class StatusBarCompat {
         return result;
     }
 
-    //Get alpha color
+    //得到阿尔法的颜色
     private static int calculateStatusBarColor(int color, int alpha) {
         float a = 1 - alpha / 255f;
         int red = color >> 16 & 0xff;

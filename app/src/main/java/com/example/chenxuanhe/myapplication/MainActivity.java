@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -71,12 +70,12 @@ public class MainActivity extends AppCompatActivity
                 Object result = map.get("result").toString();
                 //调用该方法，用于显示数据
                 onWeatherDisplay(map);
-                Log.i("WZY", "" + result);
+                Log.i("xxx", "" + result);
             }
 
             @Override
             public void onError(API api, int i, Throwable throwable) {
-                Log.i("WZY", "ERROR");
+                Log.i("xx", "ERROR");
             }
         });
 
@@ -104,15 +103,13 @@ public class MainActivity extends AppCompatActivity
 
         getTime();
 
-        //getInfomToken();
+        getInfomToken();
     }
 
 
     /**
      * 用于提示是否得到token
      */
-
-    /*
     public void getInfomToken() {
         Map<String, String> loginInfo = Info.getLoginInfo(MainActivity.this);
         if (loginInfo != null) {
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -307,7 +304,6 @@ public class MainActivity extends AppCompatActivity
 
         ArrayList<HashMap<String,Object>> futures = (ArrayList<HashMap<String,Object>>) weather.get("future");
         HashMap<String,Object> day = futures.get(0);
-        Log.i("xxx",""+day);
 
         mDate.setText(com.mob.tools.utils.R.toString(weather.get("date")));
         mWeek.setText(com.mob.tools.utils.R.toString(weather.get("week")));
@@ -316,7 +312,6 @@ public class MainActivity extends AppCompatActivity
         mColdIndex.setText(com.mob.tools.utils.R.toString(weather.get("coldIndex")));
         mDressingIndex.setText(com.mob.tools.utils.R.toString(weather.get("dressingIndex")));
         mExerciseIndex.setText(com.mob.tools.utils.R.toString(weather.get("exerciseIndex")));
-
         mHumidity.setText(com.mob.tools.utils.R.toString(weather.get("humidity")));
         mWind.setText(com.mob.tools.utils.R.toString(weather.get("wind")));
         mSunrise.setText(com.mob.tools.utils.R.toString(weather.get("sunrise")));
@@ -333,6 +328,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    /**
+     * 对不同天气类型给与不同图片显示
+     * @param weath
+     */
     public void  getweather(String weath)
     {
         ImageView mbjtu = (ImageView) findViewById(R.id.bjtu);
@@ -342,7 +341,44 @@ public class MainActivity extends AppCompatActivity
             case "晴":
                 mbjtu.setImageResource(R.drawable.qing);
                 break;
-            case "":
+            case "多云":
+                mbjtu.setImageResource(R.drawable.duoyun);
+                break;
+            case "少云":
+                mbjtu.setImageResource(R.drawable.shaoyun);
+                break;
+            case "阴":
+                mbjtu.setImageResource(R.drawable.yin);
+                break;
+            case "小雨":
+                mbjtu.setImageResource(R.drawable.xiaoyu);
+                break;
+            case "雨":
+                mbjtu.setImageResource(R.drawable.yu);
+                break;
+            case "雷雨":
+                mbjtu.setImageResource(R.drawable.leiyu);
+                break;
+            case "中雨":
+                mbjtu.setImageResource(R.drawable.zhongyu);
+                break;
+            case "阵雨":
+                mbjtu.setImageResource(R.drawable.zhenyu);
+                break;
+            case "小雪":
+                mbjtu.setImageResource(R.drawable.xiaoxue);
+                break;
+            case "雨夹雪":
+                mbjtu.setImageResource(R.drawable.yujiaxue);
+                break;
+            case "阵雪":
+                mbjtu.setImageResource(R.drawable.zhenxue);
+                break;
+            case "霾":
+                mbjtu.setImageResource(R.drawable.mai);
+                break;
+            default:
+                break;
         }
     }
 
