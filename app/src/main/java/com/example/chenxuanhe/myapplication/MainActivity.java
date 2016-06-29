@@ -27,10 +27,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
+import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
 import com.mob.mobapi.API;
 import com.mob.mobapi.APICallback;
 import com.mob.mobapi.MobAPI;
 import com.mob.mobapi.apis.Weather;
+import com.tencent.android.tpush.XGPushManager;
+
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import java.lang.reflect.Field;
@@ -40,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Manifest;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,10 +63,11 @@ public class MainActivity extends AppCompatActivity
 
         MobAPI.initSDK(this, APPKEY);
 
-        /*//腾讯信鸽推送
-        Context context = getApplicationContext();
-        XGPushManager.registerPush(context);*/
+        StatusBarCompat.translucentStatusBar(MainActivity.this);
 
+        //腾讯信鸽推送
+        Context context = getApplicationContext();
+        XGPushManager.registerPush(context);
 
         // 获取API实例，请求湘潭的所有有关数据
         Weather api = (Weather) MobAPI.getAPI(Weather.NAME);

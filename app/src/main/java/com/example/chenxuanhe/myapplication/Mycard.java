@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
+import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class Mycard extends AppCompatActivity {
         mswipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
 
         initAvatar();
+
 
         final Map<String,String> getToken = Info.getLoginInfo(Mycard.this);
         getInfo(getToken.get("mToken"));
