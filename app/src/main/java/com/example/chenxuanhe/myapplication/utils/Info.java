@@ -10,8 +10,6 @@ import java.util.Map;
  */
 public class Info {
 
-
-
     /**
      * 用于删除token
      * 删除信息重新登录
@@ -23,7 +21,6 @@ public class Info {
         editor.commit();
         return true;
     }
-
 
     /**
      * 用于读取个人档案

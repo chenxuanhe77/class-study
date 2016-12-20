@@ -43,7 +43,6 @@
                   android:text="余额"
                   android:id="@+id/card_Balance"
                   android:textSize="20dp"
-
                   android:layout_marginLeft="10dp"
                   android:layout_marginTop="10dp"
                   android:layout_width="match_parent"

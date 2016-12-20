@@ -6,9 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +40,8 @@ public class Login extends ActionBarActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        init();
     }
 
 
@@ -45,7 +50,7 @@ public class Login extends ActionBarActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        // int id = item.getItemId();
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -66,8 +71,31 @@ public class Login extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        menu.add(1, 1, 1, "item1");
+        menu.add(1, 1, 1, "调皮~");
         return true;
+    }
+
+    /**
+     * 更改登录按钮软键盘登录方法
+     */
+    public void init() {
+        final TextView id_password = (TextView) findViewById(R.id.id_password);
+        id_password.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        id_password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEND || (keyEvent != null && keyEvent.
+                        getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    // onClickButton(mlogin);//这个方法之点击两次，但是没有点击音效
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(id_password.getWindowToken(), 0);
+                    mlogin.performClick();  //这个方法就会点击两次
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
 
@@ -77,15 +105,17 @@ public class Login extends ActionBarActivity {
      * 显示到侧滑框
      */
     public void onClickButton(View view) {
+
+        final TextView id_username = (TextView) findViewById(R.id.id_username);
+        final TextView id_password = (TextView) findViewById(R.id.id_password);
+        final String username = id_username.getText().toString().trim();
+        final String password = id_password.getText().toString().trim();
+
+
         //登陆按钮点击一次将不能点击。显示为Loading...
         mlogin.setClickable(false);
         mlogin.setText("loading...");
 
-        final TextView id_username = (TextView) findViewById(R.id.id_username);
-        TextView id_password = (TextView) findViewById(R.id.id_password);
-
-        final String username = id_username.getText().toString().trim();
-        final String password = id_password.getText().toString().trim();
         new Thread() {
             public void run() {
                 final String result = LoginService.loginByGet(username, password);
@@ -121,10 +151,13 @@ public class Login extends ActionBarActivity {
                 }
             }
         }.start();
+
+
     }
 
+
     /**
-     * 退出是的按钮响应事件
+     * 退出按钮响应事件
      * onClickLogout
      */
     public void onClickLogout(View v) {
@@ -132,7 +165,7 @@ public class Login extends ActionBarActivity {
     }
 
     /**
-     *封装的一个Toast方法
+     * 封装的一个Toast方法
      * 可以返回主线程Toast
      */
     public void setToast(final String message) {

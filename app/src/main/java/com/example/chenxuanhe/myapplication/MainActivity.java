@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.Manifest;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity
                 onWeatherDisplay(map);
                 Log.i("xxx", "" + result);
             }
-
             @Override
             public void onError(API api, int i, Throwable throwable) {
                 Log.i("xx", "ERROR");
@@ -110,6 +108,7 @@ public class MainActivity extends AppCompatActivity
 
         getTime();
 
+        //方法，使左边侧滑百分之40面积能感触到侧滑
         setDrawerLeftEdgeSize(MainActivity.this,mDrawerLayout,0.4f);
 
         getInfomToken();
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity
                 finish();
             }
         } else {
-            Toast.makeText(MainActivity.this, "未读取到任何信息，请重新登录喔i", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "未读取到任何信息，请重新登录喔~", Toast.LENGTH_SHORT).show();
             Info.deleteUserInfo(MainActivity.this);
             doIntent(Login.class);
             finish();
@@ -231,7 +230,7 @@ public class MainActivity extends AppCompatActivity
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isAvailable()) {
-            Toast.makeText(getApplicationContext(), "网络不可用", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "网络不可用~", Toast.LENGTH_SHORT).show();
         } else {
 
             /**

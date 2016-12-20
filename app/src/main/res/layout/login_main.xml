@@ -1,64 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/login"
     android:gravity="center_vertical"
+    android:orientation="vertical"
     android:stretchColumns="0,3"
 
     >
 
     <TableRow>
+
         <TextView />
+
         <TextView
-            android:text="@string/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            />
+            android:text="@string/username"
+            android:textSize="16dp" />
+
         <EditText
             android:id="@+id/id_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24px"
-            android:minWidth="220px"/>
+            android:minWidth="220px"
+            android:textSize="24px" />
+
         <TextView />
     </TableRow>
+
     <TableRow android:layout_marginTop="10px">
+
         <TextView />
+
         <TextView
-            android:text="@string/password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/password"
 
             />
+
         <EditText
             android:id="@+id/id_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:imeOptions="actionSend"
+            android:inputType="textPassword"
             android:minWidth="220px"
-            android:textSize="24px"
-            android:inputType="textPassword"/>
+            android:textSize="24px" />
+
         <TextView />
     </TableRow>
+
     <TableRow android:layout_marginTop="10px">
-        <TextView />-
+
+        <TextView />
+
         <Button
             android:id="@+id/login"
-            android:text="@string/login"
-            android:textAllCaps="false"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:onClick="onClickButton"
-            />
+            android:text="@string/login"
+            android:textAllCaps="false" />
+
         <Button
             android:id="@+id/quit"
-            android:text="@string/logout"
-            android:onClick="onClickLogout"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:onClick="onClickLogout"
+            android:text="@string/logout" />
+
         <TextView />
     </TableRow>
 </TableLayout>
