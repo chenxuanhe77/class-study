@@ -13,7 +13,7 @@
         <item
             android:id="@+id/id_searchcard"
             android:icon="@drawable/mylost"
-            android:title="@string/searchcard" />
+            android:title="@string/searchmark" />
         <item
             android:id="@+id/id_mysetting"
             android:icon="@drawable/setting"

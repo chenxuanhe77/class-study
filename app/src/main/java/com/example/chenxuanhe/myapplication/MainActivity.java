@@ -8,23 +8,26 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.ViewDragHelper;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
 import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
@@ -36,8 +39,8 @@ import com.tencent.android.tpush.XGPushManager;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.lang.reflect.Field;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
     private String APPKEY = "12ae915419880";
+    private static final int newTime = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity
                 onWeatherDisplay(map);
                 Log.i("xxx", "" + result);
             }
+
             @Override
             public void onError(API api, int i, Throwable throwable) {
                 Log.i("xx", "ERROR");
@@ -106,13 +111,69 @@ public class MainActivity extends AppCompatActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        getTime();
+        getTime();//显示时间
 
         //方法，使左边侧滑百分之40面积能感触到侧滑
-        setDrawerLeftEdgeSize(MainActivity.this,mDrawerLayout,0.4f);
+        setDrawerLeftEdgeSize(MainActivity.this, mDrawerLayout, 0.4f);
 
         getInfomToken();
+
+
     }
+
+
+    /**
+     * 完成首页时间的的显示
+     */
+    public void getTime() {
+
+        TextView mNowTime = (TextView) findViewById(R.id.nowTime);
+        Date date = new Date();
+        SimpleDateFormat dateformat = new SimpleDateFormat("hh:mm:ss");
+        mNowTime.setText(dateformat.format(date));
+        new TimeThread().start();//开启这个线程
+    }
+
+    /**
+     * 内部类，开启线程，实现时间刷新，每秒刷新一次
+     */
+    public class TimeThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+            do {
+                try {
+                    Thread.sleep(100);
+                    Message msg = new Message();
+                    msg.what = newTime;
+                    mHandler.sendMessage(msg);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while (true);
+        }
+    }
+
+    /**
+     * 同上作用。一个handle传递刷新信息
+     */
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case newTime:
+                    long time = System.currentTimeMillis();
+                    Date date = new Date(time);
+                    SimpleDateFormat sptime = new SimpleDateFormat("hh:mm:ss");
+                    TextView mNowTime = (TextView) findViewById(R.id.nowTime);
+                    mNowTime.setText(sptime.format(date));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
 
 
     /**
@@ -130,7 +191,7 @@ public class MainActivity extends AppCompatActivity
             }
         } else {
             Toast.makeText(MainActivity.this, "未读取到任何信息，请重新登录喔~", Toast.LENGTH_SHORT).show();
-            Info.deleteUserInfo(MainActivity.this);
+            //   Info.deleteUserInfo(MainActivity.this);
             doIntent(Login.class);
             finish();
         }
@@ -288,6 +349,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * 用于TextView获取接口数据显示
+     *
      * @param result
      */
     private void onWeatherDisplay(Map<String, Object> result) {
@@ -310,8 +372,8 @@ public class MainActivity extends AppCompatActivity
         ArrayList<HashMap<String, Object>> results = (ArrayList<HashMap<String, Object>>) result.get("result");
         HashMap<String, Object> weather = results.get(0);
 
-        ArrayList<HashMap<String,Object>> futures = (ArrayList<HashMap<String,Object>>) weather.get("future");
-        HashMap<String,Object> day = futures.get(0);
+        ArrayList<HashMap<String, Object>> futures = (ArrayList<HashMap<String, Object>>) weather.get("future");
+        HashMap<String, Object> day = futures.get(0);
 
         mDate.setText(com.mob.tools.utils.R.toString(weather.get("date")));
         mWeek.setText(com.mob.tools.utils.R.toString(weather.get("week")));
@@ -338,13 +400,13 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * 对不同天气类型给与不同图片显示
+     *
      * @param weath
      */
-    public void  getweather(String weath)
-    {
+    public void getweather(String weath) {
         ImageView mbjtu = (ImageView) findViewById(R.id.bjtu);
 
-        if (weath!=null) {
+        if (weath != null) {
             switch (weath) {
                 case "晴":
                     mbjtu.setImageResource(R.drawable.qing);
@@ -394,30 +456,19 @@ public class MainActivity extends AppCompatActivity
                 default:
                     break;
             }
-        }else {
+        } else {
             Toast.makeText(MainActivity.this, "没有接到到天气的数据类型喔0.0~", Toast.LENGTH_SHORT).show();
         }
     }
 
-    /**
-     * 完成首页时间的的显示
-     */
-    public void getTime() {
-        TextView mNowTime = (TextView) findViewById(R.id.nowTime);
-        Date date = new Date();
-        DateFormat dateformat = new SimpleDateFormat("hh:mm:ss");
-        mNowTime.setText(dateformat.format(date));
-
-    }
 
     /**
-     *改变侧滑栏的触摸滑动范围
+     * 改变侧滑栏的触摸滑动范围
      * 三个参数
      */
     public static void setDrawerLeftEdgeSize(Activity activity,
                                              DrawerLayout drawerLayout,
-                                             float displayWidthPercentage)
-    {
+                                             float displayWidthPercentage) {
         if (activity == null || drawerLayout == null) return;
         try {
             Field leftDraggerField = drawerLayout.getClass().getDeclaredField("mLeftDragger");
@@ -430,17 +481,11 @@ public class MainActivity extends AppCompatActivity
             activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
             edgeSizeField.setInt(leftDragger,
                     Math.max(edgeSize, (int) (dm.widthPixels * displayWidthPercentage)));
-        }
-        catch (NoSuchFieldException e)
-        {
+        } catch (NoSuchFieldException e) {
             // ignore
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             // ignore
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // ignore
         }
     }

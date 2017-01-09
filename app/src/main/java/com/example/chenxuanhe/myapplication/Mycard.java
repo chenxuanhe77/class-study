@@ -16,12 +16,13 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
-import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -149,7 +150,7 @@ public class Mycard extends AppCompatActivity {
                                 break;
                             case 2:
                                 setToast("登录数据出错，请重新登录~~");
-                                Info.deleteUserInfo(Mycard.this);//删除并重新登录
+                             //   Info.deleteUserInfo(Mycard.this);//删除并重新登录
                                 final Intent intent =getPackageManager()
                                         .getLaunchIntentForPackage(getPackageName());//返回入口 就是最初的Activity
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//重新开启Activity并在该栈而不创新栈

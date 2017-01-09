@@ -11,17 +11,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
-import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
@@ -188,7 +190,7 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
      * 用于token出现错误，删除token并且重新登录获取token
      */
     public void relogin(){
-        Info.deleteUserInfo(Myclass.this);
+      //  Info.deleteUserInfo(Myclass.this);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
