@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chenxuanhe.myapplication.utils.CircleImageView;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
 import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private String APPKEY = "12ae915419880";
     private static final int newTime = 1;
+    private CircleImageView headImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity
         mNowTime.setText(dateformat.format(date));
         new TimeThread().start();//开启这个线程
     }
+
 
     /**
      * 内部类，开启线程，实现时间刷新，每秒刷新一次
@@ -273,9 +276,8 @@ public class MainActivity extends AppCompatActivity
      * QQ Tell Name Avatar
      */
     public void onClickImage(View view) {
-        Intent intent = new Intent();
-        intent.setClass(MainActivity.this, MyInfo.class);
-        startActivity(intent);
+        doIntent(MyInfo.class);
+        Log.d("TTDD","TTDDDD");
     }
 
     /**
