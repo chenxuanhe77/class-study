@@ -1,82 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFE4E1"
-    >
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
-    <ImageView
+    <com.example.chenxuanhe.myapplication.utils.CircleImageView
         android:id="@+id/info_Avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@drawable/ss"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-       />
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:src="@drawable/ss" />
 
-  <LinearLayout
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:orientation="horizontal"
-     android:paddingTop="16dp"
-     >
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/name"
-        android:paddingLeft="30dp"
-        />
-
-    <TextView
-        android:text="姓名："
-        android:textSize="24dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
-    <TextView
-        android:id="@+id/info_Name"
-        android:textSize="24dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
- </LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="30dp"
+        android:paddingTop="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:src="@drawable/name" />
+
+        <TextView
+            android:textColor="#000000"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="姓名："
+            android:textSize="24dp" />
+
+        <TextView
+            android:textColor="#000000"
+
+            android:id="@+id/info_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24dp" />
+    </LinearLayout>
 
     <LinearLayout
 
-        android:paddingTop="16dp"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/id"
             android:layout_marginLeft="16dp"
-            />
+            android:src="@drawable/id" />
 
         <TextView
-            android:text="学号:"
-            android:textSize="20dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="学号:"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/info_Id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            />
+            android:textSize="20dp" />
 
     </LinearLayout>
 
@@ -86,40 +81,37 @@
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
 
-      <LinearLayout
+    <LinearLayout
 
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
 
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/qq"
             android:layout_marginLeft="16dp"
-            />
+            android:src="@drawable/qq" />
 
         <TextView
-            android:text="Q Q :"
-            android:textSize="20dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Q Q :"
+            android:textSize="20dp" />
 
-          <TextView
+        <TextView
             android:id="@+id/info_QQ"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="21dp"/>
+            android:textSize="21dp" />
 
-      </LinearLayout>
+    </LinearLayout>
 
-      <View
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
@@ -127,33 +119,30 @@
 
     <LinearLayout
 
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
 
         <ImageView
-            android:src="@drawable/phone"
-            android:layout_marginLeft="16dp"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            />
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/phone" />
 
         <TextView
-            android:text="手机:"
-            android:textSize="20dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="手机:"
+            android:textSize="20dp" />
+
         <TextView
             android:id="@+id/info_Tel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            />
+            android:textSize="20dp" />
 
     </LinearLayout>
 

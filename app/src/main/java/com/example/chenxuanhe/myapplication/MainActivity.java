@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 
         MobAPI.initSDK(this, APPKEY);
 
-        StatusBarCompat.translucentStatusBar(MainActivity.this);
+        StatusBarCompat.translucentStatusBar(MainActivity.this,true);
 
         //腾讯信鸽推送
         Context context = getApplicationContext();
@@ -277,7 +277,6 @@ public class MainActivity extends AppCompatActivity
      */
     public void onClickImage(View view) {
         doIntent(MyInfo.class);
-        Log.d("TTDD","TTDDDD");
     }
 
     /**

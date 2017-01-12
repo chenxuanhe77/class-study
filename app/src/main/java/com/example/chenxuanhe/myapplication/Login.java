@@ -6,13 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class Login extends ActionBarActivity {
 
 
     @Bind(R.id.login)
-    Button mlogin;
+    CardView mlogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,30 @@ public class Login extends ActionBarActivity {
      * 更改登录按钮软键盘登录方法
      */
     public void init() {
-        final TextView id_password = (TextView) findViewById(R.id.id_password);
+        final EditText id_username = (EditText) findViewById(R.id.id_username);
+        final EditText id_password = (EditText) findViewById(R.id.id_password);
+          /**
+            * 用户名软键盘enter键更改为：下一个
+              */
+        id_username.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        id_username.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_NEXT || (keyEvent != null && keyEvent.
+                        getKeyCode() == keyEvent.KEYCODE_ENTER)){
+                    id_password.setFocusable(true);            //
+                    id_password.setFocusableInTouchMode(true);//
+                    id_password.requestFocus();               //这三行，让密码框自动获取焦点
+                    return  true;
+                }
+
+                return false;
+            }
+        });
+
+        /**
+         * 密码软键盘enter键更改为：发送
+         */
         id_password.setImeOptions(EditorInfo.IME_ACTION_SEND);
         id_password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -114,7 +138,7 @@ public class Login extends ActionBarActivity {
 
         //登陆按钮点击一次将不能点击。显示为Loading...
         mlogin.setClickable(false);
-        mlogin.setText("loading...");
+       // mlogin.setText("loading...");
 
         new Thread() {
             public void run() {
@@ -162,6 +186,8 @@ public class Login extends ActionBarActivity {
      */
     public void onClickLogout(View v) {
         System.exit(0);
+
+
     }
 
     /**
@@ -188,5 +214,6 @@ public class Login extends ActionBarActivity {
         edit.commit();
         return true;
     }
+
 }
 

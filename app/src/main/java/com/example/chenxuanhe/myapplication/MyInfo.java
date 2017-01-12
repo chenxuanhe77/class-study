@@ -10,9 +10,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
-import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
+
 import java.util.Map;
 
 /**
@@ -40,8 +41,9 @@ public class MyInfo extends AppCompatActivity{
         myQQ = (TextView) findViewById(R.id.info_QQ);
         myTel = (TextView) findViewById(R.id.info_Tel);
 
-        StatusBarCompat.setStatusBarColor(this);
+       // StatusBarCompat.setStatusBarColor(this);
         pushInfo();
+
     }
 
     /**
