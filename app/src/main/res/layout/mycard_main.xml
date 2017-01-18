@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#FFF5EE"
+    android:background="#FFFFFF"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,7 +10,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="110dp">
 
        <LinearLayout
            android:orientation="horizontal"
@@ -18,7 +18,7 @@
            android:layout_height="200dp"
            android:weightSum="1">
 
-           <ImageView
+           <com.example.chenxuanhe.myapplication.utils.CircleImageView
                android:id="@+id/card_Avatar"
                android:layout_marginLeft="10dp"
                android:layout_marginTop="8dp"
@@ -34,7 +34,7 @@
                   android:id="@+id/card_Name"
                   android:textSize="20dp"
                   android:layout_marginLeft="10dp"
-                  android:layout_marginTop="10dp"
+                  android:layout_marginTop="26dp"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                    />
@@ -42,8 +42,8 @@
                   <TextView
                   android:text="余额"
                   android:id="@+id/card_Balance"
-                  android:textSize="20dp"
-                  android:layout_marginLeft="10dp"
+                  android:textSize="20sp"
+                  android:layout_marginStart="10dp"
                   android:layout_marginTop="10dp"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@null"
-        android:listSelector="#00000000">
+        android:listSelector="#FFFFFF">
 
     </ListView>
 
