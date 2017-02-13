@@ -13,8 +13,9 @@
 
     <ImageView
         android:layout_width="90dp"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
         android:paddingBottom="5dp"
+        android:layout_marginStart="10dp"
         android:src="@drawable/mao"
         android:id="@+id/id_imageView"
         android:onClick="onClickImage"

@@ -18,28 +18,11 @@ public class Info {
         SharedPreferences wc = context.getSharedPreferences("UserData",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = wc.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
         return true;
     }
 
-    /**
-     * 用于读取个人档案
-     * */
-    public static Map<String,String>getUserInfo(Context context){
-        SharedPreferences wc = context.getSharedPreferences("UserData",Context.MODE_PRIVATE);
-        String mID = wc.getString("infoID", null);
-        String mQQ = wc.getString("infoQQ", null);
-        String mTell = wc.getString("infoTell",null);
-        String mName = wc.getString("infoName",null);
-        String mAvatar = wc.getString("infoAvatar", null);
-        Map<String,String> userMap = new HashMap<>();
-        userMap.put("infoID", mID);
-        userMap.put("infoQQ", mQQ);
-        userMap.put("infoTell", mTell);
-        userMap.put("infoName", mName);
-        userMap.put("infoAvatar", mAvatar);
-        return userMap;
-    }
+
 
     /**
      * 读取登录的token实现不注销就免登录
@@ -53,21 +36,41 @@ public class Info {
         map.put("mToken", mToken);
         return map;
     }
+
+    /**
+     * 用于读取个人档案
+     * */
+    public static Map<String,String>getUserInfo(Context context){
+        SharedPreferences wc = context.getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        String mName = wc.getString("infoName", null);
+        String mCollger = wc.getString("infoCollger", null);
+        String mMajor = wc.getString("infoMajor",null);
+        String mCity = wc.getString("infoCity",null);
+        String mId = wc.getString("infoId", null);
+        Map<String,String> userMap = new HashMap<>();
+        userMap.put("infoName", mName);
+        userMap.put("infoCollger", mCollger);
+        userMap.put("infoMajor", mMajor);
+        userMap.put("infoCity", mCity);
+        userMap.put("infoId", mId);
+        return userMap;
+    }
+
     /**
      * 保存个人档案
      *
      *
      * * */
-    public static boolean saveUserInfo(Context context,String mID,String mName,
-                                       String mTell,String mAvatar,String mQQ){
+    public static boolean saveUserInfo(Context context,String mName,String mCollger,
+                                       String mMajor,String mCity,String mId){
         SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = wc.edit();
-        editor.putString("infoID",mID);
         editor.putString("infoName", mName);
-        editor.putString("infoTell", mTell);
-        editor.putString("infoQQ", mQQ);
-        editor.putString("infoAvatar", mAvatar);
-        editor.commit();
+        editor.putString("infoCollger",mCollger);
+        editor.putString("infoMajor", mMajor);
+        editor.putString("infoCity", mCity);
+        editor.putString("infoId", mId);
+        editor.apply();
         return  true;
     }
 

@@ -93,14 +93,14 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/qq" />
+            android:src="@drawable/collger" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:text="Q Q :"
+            android:text="院系 :"
             android:textSize="20dp" />
 
         <TextView
@@ -128,18 +128,53 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/phone" />
+            android:src="@drawable/profession" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:text="手机:"
+            android:text="专业:"
             android:textSize="20dp" />
 
         <TextView
             android:id="@+id/info_Tel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/address" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="住址:"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/info_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp" />

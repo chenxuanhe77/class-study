@@ -3,8 +3,6 @@ package com.example.chenxuanhe.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -28,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.chenxuanhe.myapplication.utils.CircleImageView;
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
 import com.example.chenxuanhe.myapplication.utils.StatusBarCompat;
@@ -38,6 +35,7 @@ import com.mob.mobapi.MobAPI;
 import com.mob.mobapi.apis.Weather;
 import com.tencent.android.tpush.XGPushManager;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private String APPKEY = "12ae915419880";
     private static final int newTime = 1;
-    private CircleImageView headImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
 
         MobAPI.initSDK(this, APPKEY);
 
@@ -194,7 +193,7 @@ public class MainActivity extends AppCompatActivity
             }
         } else {
             Toast.makeText(MainActivity.this, "未读取到任何信息，请重新登录喔~", Toast.LENGTH_SHORT).show();
-            //   Info.deleteUserInfo(MainActivity.this);
+           // Info.deleteUserInfo(MainActivity.this);
             doIntent(Login.class);
             finish();
         }
@@ -245,10 +244,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.id_myclass) {
             doIntent(Myclass.class);
         } else if (id == R.id.id_searchcard) {
-            doIntent(Searchcard.class);
+            doIntent(MyMark.class);
         } else if (id == R.id.id_mysetting) {
             doIntent(Mysetting.class);
         } else if (id == R.id.nav_logoff) {
+            Info.deleteUserInfo(this);
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity
      */
     public void getInfo(final String mToken) {
         View view = mNavigationView.inflateHeaderView(R.layout.nav_header_main);
-        final ImageView mAvatar = (ImageView) view.findViewById(R.id.id_imageView);
+      //  final ImageView mAvatar = (ImageView) view.findViewById(R.id.id_imageView);
         final TextView mId = (TextView) view.findViewById(R.id.id_id);
         final TextView mName = (TextView) view.findViewById(R.id.id_name);
 
@@ -302,42 +302,59 @@ public class MainActivity extends AppCompatActivity
             new Thread() {
                 public void run() {
                     final String result = Netget.getUserInfo(mToken);
+                    Log.d("AAA","adadadadadada");
                     if (result != null) {
                         try {
                             JSONTokener jsonTokener = new JSONTokener(result);
                             JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
+
                             if (jsonObject.getInt("error") == 0) {
-                                JSONObject object = new JSONObject(result);
-                                String infoAvatar = object.getString("avatar");
-                                String infoID = object.getString("xuehao");
-                                String infoQQ = object.getString("QQ");
-                                String infoTell = object.getString("tel");
-                                String infoName = object.getString("name");
-                                boolean isSaveSuccess = Info.saveUserInfo(MainActivity.this, infoID,
-                                        infoName, infoTell, infoAvatar, infoQQ);
-                                byte[] Avatar = Netget.getUserAvatar(infoAvatar);
-                                final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar, 0, Avatar.length);
-                                if (isSaveSuccess) {
+                                JSONObject outData = jsonObject.getJSONObject("data");//获得外层data
+                                JSONArray date = outData.getJSONArray("data");
+                                for(int i = 0;i<date.length();i++){
+                                    JSONObject data = date.getJSONObject(i);
+                                    String name = data.getString("name");
+                                    String college = data.getString("college");
+                                    String major = data.getString("major");
+                                    String city = data.getString("city");
+                                    String id = data.getString("sid");
 
-                                    /**返回主线程*/
+                                    boolean isSaveSuccess = Info.saveUserInfo(MainActivity.this, name,
+                                            college, major, city, id);
+                                    if (isSaveSuccess){
+                                        /**返回主线程*/
 
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Map<String, String> userinfo = Info.getUserInfo(MainActivity.this);
-                                            mAvatar.setImageBitmap(bitmap);
-                                            mId.setText(userinfo.get("infoID"));
-                                            mName.setText(userinfo.get("infoName"));
-                                        }
-                                    });
-                                } else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(MainActivity.this, "个人档案并没有保存成功嚯！", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Map<String, String> userinfo = Info.getUserInfo(MainActivity.this);
+                                           //     mAvatar.setImageBitmap(bitmap);
+                                                mId.setText(userinfo.get("infoId"));
+                                                mName.setText(userinfo.get("infoName"));
+                                            }
+                                        });
+                                    } else {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(MainActivity.this, "个人档案并没有保存成功嚯！", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
                                 }
+                             //   JSONObject object = new JSONObject(result);
+                            //    String infoAvatar = object.getString("avatar");
+                            //    String infoID = object.getString("xuehao");
+                           //     String infoQQ = object.getString("QQ");
+                             //   String infoTell = object.getString("tel");
+                              //  String infoName = object.getString("name");
+                           //     byte[] Avatar = Netget.getUserAvatar(infoAvatar);
+                            //    final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar, 0, Avatar.length);
+
+                            }else if(jsonObject.getInt("error")==1){
+                                doIntent(Login.class);
+                            }else if(jsonObject.getInt("error")==2){
+                                doIntent(Login.class);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

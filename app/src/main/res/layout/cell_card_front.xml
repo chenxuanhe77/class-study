@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_fl_card_front"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/AAA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:padding="50dp"
+            android:src="@drawable/rectangle_front" />
+
+        <TextView
+            android:text="一天之内只能获得同一个结果呦"
+            android:layout_alignRight="@+id/AAA"
+            android:layout_alignBottom="@+id/AAA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="58dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="查看今天好运"
+            android:textColor="@color/colorPrimary"
+            android:textSize="40dp" />
+
+
+
+    </RelativeLayout>
+
+</FrameLayout>

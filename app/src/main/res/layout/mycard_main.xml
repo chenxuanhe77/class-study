@@ -1,70 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="#FFFFFF"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
-        android:layout_height="110dp">
+        android:layout_height="200dp">
 
-       <LinearLayout
-           android:orientation="horizontal"
-           android:layout_width="wrap_content"
-           android:layout_height="200dp"
-           android:weightSum="1">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="180dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-           <com.example.chenxuanhe.myapplication.utils.CircleImageView
-               android:id="@+id/card_Avatar"
-               android:layout_marginLeft="10dp"
-               android:layout_marginTop="8dp"
-               android:layout_width="100dp"
-               android:layout_height="100dp"
-               />
-                 <LinearLayout
-                 android:orientation="vertical"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content">
-                 <TextView
-                  android:text="姓名"
-                  android:id="@+id/card_Name"
-                  android:textSize="20dp"
-                  android:layout_marginLeft="10dp"
-                  android:layout_marginTop="26dp"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                   />
+            <com.example.chenxuanhe.myapplication.utils.CircleImageView
+                android:id="@+id/card_Avatar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/mao" />
 
-                  <TextView
-                  android:text="余额"
-                  android:id="@+id/card_Balance"
-                  android:textSize="20sp"
-                  android:layout_marginStart="10dp"
-                  android:layout_marginTop="10dp"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  />
+            <LinearLayout
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                 </LinearLayout>
+                <TextView
+                    android:id="@+id/card_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="26dp"
+                    android:text="姓名"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/card_Balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="余额"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/card_Time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="时间"
+                    android:textSize="20dp" />
+                <TextView
+                    android:id="@+id/card_Status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="状态"
+                    android:textSize="20dp" />
+                <TextView
+                    android:id="@+id/card_Id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:text="卡号"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
-    <ListView
-        android:id="@+id/card_Listview"
+    <FrameLayout
+        android:onClick="flipCard"
+        android:id="@+id/main_fl_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        android:listSelector="#FFFFFF">
+        android:layout_height="match_parent">
 
-    </ListView>
+        <include layout="@layout/cell_card_back"/>
+
+        <include layout="@layout/cell_card_front"/>
+
+
+    </FrameLayout>
+
+
+
 
 </LinearLayout>
 

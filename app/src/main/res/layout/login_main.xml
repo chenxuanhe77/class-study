@@ -79,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/login"
-                android:id="@+id/textView" />
+                android:id="@+id/textView_login" />
 
 
         </android.support.v7.widget.CardView>

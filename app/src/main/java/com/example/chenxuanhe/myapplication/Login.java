@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -26,11 +26,13 @@ import butterknife.ButterKnife;
 /**
  * Created by chenxuanhe on 2016/4/15.
  */
-public class Login extends ActionBarActivity {
+public class Login extends AppCompatActivity {
 
 
     @Bind(R.id.login)
     CardView mlogin;
+    @Bind(R.id.textView_login)
+    TextView textView_Login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,19 +84,19 @@ public class Login extends ActionBarActivity {
     public void init() {
         final EditText id_username = (EditText) findViewById(R.id.id_username);
         final EditText id_password = (EditText) findViewById(R.id.id_password);
-          /**
-            * 用户名软键盘enter键更改为：下一个
-              */
+        /**
+         * 用户名软键盘enter键更改为：下一个
+         */
         id_username.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         id_username.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_NEXT || (keyEvent != null && keyEvent.
-                        getKeyCode() == keyEvent.KEYCODE_ENTER)){
+                if (actionId == EditorInfo.IME_ACTION_NEXT || (keyEvent != null && keyEvent.
+                        getKeyCode() == keyEvent.KEYCODE_ENTER)) {
                     id_password.setFocusable(true);            //
                     id_password.setFocusableInTouchMode(true);//
                     id_password.requestFocus();               //这三行，让密码框自动获取焦点
-                    return  true;
+                    return true;
                 }
 
                 return false;
@@ -130,15 +132,16 @@ public class Login extends ActionBarActivity {
      */
     public void onClickButton(View view) {
 
-        final TextView id_username = (TextView) findViewById(R.id.id_username);
-        final TextView id_password = (TextView) findViewById(R.id.id_password);
+        final EditText id_username = (EditText) findViewById(R.id.id_username);
+        final EditText id_password = (EditText) findViewById(R.id.id_password);
         final String username = id_username.getText().toString().trim();
         final String password = id_password.getText().toString().trim();
 
 
         //登陆按钮点击一次将不能点击。显示为Loading...
         mlogin.setClickable(false);
-       // mlogin.setText("loading...");
+        textView_Login.setText("登陆中...");
+        // mlogin.setText("loading...");
 
         new Thread() {
             public void run() {
@@ -149,14 +152,15 @@ public class Login extends ActionBarActivity {
                         JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
                         final String message = jsonObject.getString("message");
                         if (jsonObject.getInt("error") == 0) {
-                            String token = jsonObject.getString("token");
-                            boolean SaveSuccess = saveUserInfo(Login.this, username, token);
+                            final String token = jsonObject.getString("token");
+                            boolean SaveSuccess = saveUserInfo(Login.this,token);
                             if (SaveSuccess) {
 
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Login.this, ""+token, Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent();
                                         intent.setClass(Login.this, MainActivity.class);
                                         startActivity(intent);
@@ -165,9 +169,9 @@ public class Login extends ActionBarActivity {
                                 });
                             }
                         } else {
-                            if (jsonObject.getInt("error") == 1) {
                                 setToast(message);
-                            }
+                                mlogin.setClickable(true);
+                                textView_Login.setText("登陆");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -187,7 +191,6 @@ public class Login extends ActionBarActivity {
     public void onClickLogout(View v) {
         System.exit(0);
 
-
     }
 
     /**
@@ -206,12 +209,11 @@ public class Login extends ActionBarActivity {
     /**
      * 保存Token
      **/
-    private static boolean saveUserInfo(Context context, String mID, String mToken) {
+    private static boolean saveUserInfo(Context context,  String mToken) {
         SharedPreferences wc = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = wc.edit();
-        edit.putString("mID", mID);
         edit.putString("mToken", mToken);
-        edit.commit();
+        edit.apply();
         return true;
     }
 

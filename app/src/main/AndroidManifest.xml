@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.chenxuanhe.myapplication" >
+    package="com.example.chenxuanhe.myapplication">
 
     <!-- 【必须】 信鸽SDK所需权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,36 +22,37 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     //app应有权限
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/tubiao"
         android:label="@string/label"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/label"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Login"/>
-        <activity android:name=".MyInfo"/>
-        <activity android:name=".Mycard"/>
-        <activity android:name=".Myclass"/>
+        <activity android:name=".Login" />
+        <activity android:name=".MyInfo" />
+        <activity android:name=".Mycard" />
+        <activity android:name=".Myclass" />
+        <activity android:name=".MyMark"/>
 
         <!-- 【必须】 信鸽receiver广播接收 -->
         <receiver
             android:name="com.tencent.android.tpush.XGPushReceiver"
-            android:process=":xg_service_v2" >
-            <intent-filter android:priority="0x7fffffff" >
+            android:process=":xg_service_v2">
+            <intent-filter android:priority="0x7fffffff">
+
                 <!-- 【必须】 信鸽SDK的内部广播 -->
                 <action android:name="com.tencent.android.tpush.action.SDK" />
                 <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />
@@ -66,12 +67,13 @@
             </intent-filter>
         </receiver>
         <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
-        <!-- 【注意】 如果被打开的activity是启动模式为SingleTop，SingleTask或SingleInstance，请根据通知的异常自查列表第8点处理-->
+        <!-- 【注意】 如果被打开的activity是启动模式为SingleTop，SingleTask或SingleInstance，请根据通知的异常自查列表第8点处理 -->
         <activity
             android:name="com.tencent.android.tpush.XGPushActivity"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
-                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action"-->
+
+                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action" -->
                 <action android:name="android.intent.action" />
             </intent-filter>
         </activity>
@@ -84,7 +86,7 @@
         <!-- 【必须】 通知service，此选项有助于提高抵达率 -->
         <service
             android:name="com.tencent.android.tpush.rpc.XGRemoteService"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.example.chenxuanhe.myapplication.PUSH_ACTION" />
             </intent-filter>
@@ -99,7 +101,5 @@
             android:value="AL612T24ZYXZ" />
 
     </application>
-
-
 
 </manifest>

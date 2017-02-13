@@ -1,32 +1,33 @@
 package com.example.chenxuanhe.myapplication;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chenxuanhe.myapplication.utils.Info;
 import com.example.chenxuanhe.myapplication.utils.Netget;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -35,18 +36,45 @@ import java.util.Map;
 public class Mycard extends AppCompatActivity {
 
     private ImageView card_Avatar;
+    private TextView card_Status;
+    private TextView card_Id;
+    private TextView card_Time;
     private TextView card_Name;
     private TextView card_Banlance;
+    private TextView card_back_massage;
     private ListView card_Listview;
     private ProgressDialog mDialog;
     private SwipeRefreshLayout mswipeLayout;
     private HashMap<String,Object> CardInfo;
     private List<HashMap<String,Object>> CardInfos;
 
+    private FrameLayout bigFrameLayout;
+    private FrameLayout FrameLayout1;
+    private FrameLayout FrameLayout2;
+    private AnimatorSet mLeftInSet;
+    private AnimatorSet mRightOutSet;
+    private boolean mIsShowBack;
+
+    private List<String> a = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mycard_main);
+
+    //    a.add("0");//List从0开始，随机数不包括12，所以随机数12以内，0-11，为12个随机数，对于list数据
+        a.add("今天运气无可阻挡，好运值爆棚呦！");
+        a.add("多注意异性，说不定桃花就来了！");
+        a.add("今天有笔横财要发，嚯嚯！");
+        a.add("学会保持微笑，好运就来了！");
+        a.add("今天可得小心呦，容易发生尴尬的事情！");
+        a.add("今天是3000年来你最好运的一天~");
+        a.add("今天适宜逃单，厉害了，咻咻~");
+        a.add("不要装酷，对妹子才有亲和力~");
+        a.add("今天考试无敌逢考必过~");
+        a.add("今天怕是要翻水水呦~");
+        a.add("今天吃喝玩不花钱，我说的！");
+        a.add("学会帮助他人，好运接踵而至呦！");
 
 
         setTitle("校园卡消费查询");
@@ -54,12 +82,20 @@ public class Mycard extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         card_Avatar = (ImageView)findViewById(R.id.card_Avatar);
+        card_Status = (TextView) this.findViewById(R.id.card_Status);
+        card_Id = (TextView)this.findViewById(R.id.card_Id);
         card_Name = (TextView) findViewById(R.id.card_Name);
+        card_Time =  (TextView) this.findViewById(R.id.card_Time);
         card_Banlance = (TextView)findViewById(R.id.card_Balance);
-        card_Listview = (ListView) findViewById(R.id.card_Listview);
+        card_back_massage = (TextView)this.findViewById(R.id.card_back_message);
+     //   card_Listview = (ListView) findViewById(R.id.card_Listview);
         mswipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
 
-        initAvatar();
+        bigFrameLayout = (FrameLayout) this.findViewById(R.id.main_fl_container);
+        FrameLayout1 = (FrameLayout)this.findViewById(R.id.main_fl_card_back);
+        FrameLayout2 = (FrameLayout)this.findViewById(R.id.main_fl_card_front);
+
+        //initAvatar();
 
 
         final Map<String,String> getToken = Info.getLoginInfo(Mycard.this);
@@ -70,7 +106,7 @@ public class Mycard extends AppCompatActivity {
          * OnScrollListener的回调方法
          * 在收藏夹关于回调的方法
          * */
-        card_Listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+      /*  card_Listview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
@@ -86,7 +122,7 @@ public class Mycard extends AppCompatActivity {
                     mswipeLayout.setEnabled(false);
                 }
             }
-        });
+        });*/
 
 
         /**
@@ -101,6 +137,62 @@ public class Mycard extends AppCompatActivity {
             }});
         mswipeLayout.setColorSchemeResources(R.color.yellow,R.color.red,R.color.blue);//下拉icon三色变换
 
+        setAnimation();//设置动画
+        setCameraDistance();//设置镜头距离，在这里不是太懂
+    }
+    private void setAnimation() {
+        //mLeftInSet是左边进入的动画
+        mLeftInSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.anim_in);
+        //mRightOutSet是右边出去的动画
+        mRightOutSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.anim_out);
+
+        //点击事件
+        //通过ListenerAdapter就不需重写所有方法，只需写需要写的方法
+        mRightOutSet.addListener(new AnimatorListenerAdapter() {
+            //动画开始时候
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                bigFrameLayout.setClickable(false);
+            }
+        });
+        //动画结束的时候
+        mLeftInSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                bigFrameLayout.setClickable(true);//主布局中framelayouy的就允许你去点击了
+            }
+        });
+
+    }
+    //一直不是很懂的设置镜头距离，
+//帖子上的注释写着：改变视角距离，贴近屏幕
+    private void setCameraDistance() {
+        int distance = 16000;
+        float scale = getResources().getDisplayMetrics().density*distance;
+        FrameLayout1.setCameraDistance(scale);//设置距离
+        FrameLayout2.setCameraDistance(scale);//设置距离
+    }
+    public void flipCard(View view){
+        if(!mIsShowBack){
+            mRightOutSet.setTarget(FrameLayout2);
+            mLeftInSet.setTarget(FrameLayout1);
+            mRightOutSet.start();
+            mLeftInSet.start();
+            mIsShowBack = true;
+            Random random = new Random();
+            int suijishu = random.nextInt(12);
+            card_back_massage.setText(a.get(suijishu));
+
+
+        }else {
+            mRightOutSet.setTarget(FrameLayout1);
+            mLeftInSet.setTarget(FrameLayout2);
+            mRightOutSet.start();
+            mLeftInSet.start();
+            mIsShowBack = false;
+        }
     }
 
 
@@ -126,12 +218,16 @@ public class Mycard extends AppCompatActivity {
                             case 0:
                                 JSONObject jsb = jsonObject.getJSONObject("data");
                                 JSONObject info = jsb.getJSONObject("info");
+
                                 final String cardName = info.getString("name");
                                 final String cardBalance = info.getString("balance");
-                                JSONArray jsonArray =jsb.getJSONArray("data");
+                                final String cardTime = info.getString("startDate");
+                                final String cardStatus = info.getString("status");
+                                final String cardId = info.getString("cardId");
+                           /*     JSONArray jsonArray =jsb.getJSONArray("data");
+
                                 CardInfos = new ArrayList<>();
                                 for (int i = 0;i<jsonArray.length();i++){
-
                                     JSONObject add = (JSONObject) jsonArray.get(i);
                                     String Trade = add.getString("trade");
                                     String Time = add.getString("time");
@@ -139,10 +235,9 @@ public class Mycard extends AppCompatActivity {
                                     CardInfo = new HashMap<>();
                                     CardInfo.put("Trade", "消费" + Trade);
                                     CardInfo.put("Time", "时间" + Time);
-
                                     CardInfos.add(CardInfo);
-                                }
-                                initDataCard(cardName,cardBalance);
+                                }*/
+                                initDataCard(cardName,cardBalance,cardTime,cardStatus,cardId);
                                 mDialog.dismiss();
                                 break;
                             case 1:
@@ -167,6 +262,7 @@ public class Mycard extends AppCompatActivity {
         }.start();
     }
 
+
     /**
      * 不能再线程用Toast
      * setToast方法用于上面调用
@@ -186,15 +282,19 @@ public class Mycard extends AppCompatActivity {
      * 拉取card的姓名 余额
      * 还有listView上面的信息
      */
-    public void initDataCard(final String cardName,final String cardBalance){
+    public void initDataCard(final String cardName, final String cardBalance,
+                             final String cardTime,final String status,final String cardId){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                SimpleAdapter simpleAdapter = new SimpleAdapter(Mycard.this, CardInfos, R.layout.item_card,
-                        new String[]{"Trade", "Time"}, new int[]{R.id.card_Trade, R.id.card_Time});
+        //        SimpleAdapter simpleAdapter = new SimpleAdapter(Mycard.this, CardInfos, R.layout.item_card,
+         //               new String[]{"Trade", "Time"}, new int[]{R.id.card_Trade, R.id.card_Time});
                 card_Name.setText(cardName);
                 card_Banlance.setText(cardBalance);
-                card_Listview.setAdapter(simpleAdapter);
+                card_Time.setText(cardTime);
+                card_Status.setText(status);
+                card_Id.setText(cardId);
+        //        card_Listview.setAdapter(simpleAdapter);
             }
         });
     }
@@ -204,7 +304,7 @@ public class Mycard extends AppCompatActivity {
      * 校园卡记录新现成获取头像
      * 放到bitmap中
      * */
-    public void initAvatar(){
+  /* public void initAvatar(){
         final Map<String,String> userinfo = Info.getUserInfo(Mycard.this);
         new Thread(){
             @Override
@@ -225,7 +325,7 @@ public class Mycard extends AppCompatActivity {
             }
         }.start();
 
-    }
+    }*/
 
     /**
      * 用于actionbar返回页面功能

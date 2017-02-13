@@ -14,7 +14,7 @@ public class LoginService {
      * */
     public static String loginByGet(String username,String password){
         try{
-            String visit ="http://api.13550101.com/login/token?username="
+            String visit ="http://api.13550101.com/user/login?username="
                     + URLEncoder.encode(username,"UTF-8")
                     +"&password="
                     +URLEncoder.encode(password,"UTF-8");

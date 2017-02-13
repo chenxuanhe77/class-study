@@ -25,6 +25,7 @@ public class MyInfo extends AppCompatActivity{
     private  TextView myId;
     private TextView myQQ;
     private TextView myTel;
+    private TextView myAddress;
     private ImageView myAvatar;
 
     @Override
@@ -40,6 +41,7 @@ public class MyInfo extends AppCompatActivity{
         myId = (TextView) findViewById(R.id.info_Id);
         myQQ = (TextView) findViewById(R.id.info_QQ);
         myTel = (TextView) findViewById(R.id.info_Tel);
+        myAddress = (TextView) this.findViewById(R.id.info_address);
 
        // StatusBarCompat.setStatusBarColor(this);
         pushInfo();
@@ -52,10 +54,11 @@ public class MyInfo extends AppCompatActivity{
      * */
     public void pushInfo(){
         final Map<String,String> userinfo = Info.getUserInfo(MyInfo.this);
-        myId.setText(userinfo.get("infoID"));
+        myId.setText(userinfo.get("infoId"));
         myName.setText(userinfo.get("infoName"));
-        myQQ.setText(userinfo.get("infoQQ"));
-        myTel.setText(userinfo.get("infoTell"));
+        myQQ.setText(userinfo.get("infoCollger"));
+        myTel.setText(userinfo.get("infoMajor"));
+        myAddress.setText(userinfo.get("infoCity"));
 
       /**
        * 在新线程联网获取图片
@@ -77,7 +80,7 @@ public class MyInfo extends AppCompatActivity{
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MyInfo.this,"图片读取失败，请重新登录（可能是网络问题喔~）",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyInfo.this,"目前获取不到图片，只能放固定图呦~",Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

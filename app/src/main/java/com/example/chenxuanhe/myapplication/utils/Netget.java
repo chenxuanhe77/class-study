@@ -68,7 +68,7 @@ public class Netget {
      * */
     public static  String getCardInfo(String mToken){
         try{
-            String URL = BaseURL+"ticknet/card?token="+
+            String URL = BaseURL+"main/card?token="+
                     URLEncoder.encode(mToken,"UTF-8");
             return Netget.NetConn(URL);
         }catch (Exception e){
@@ -82,7 +82,7 @@ public class Netget {
      * */
     public static String getClassInfo(String mToken){
         try{
-          String URL = BaseURL+"ticknet/schedule?token="+
+          String URL = BaseURL+"main/schedule?token="+
                   URLEncoder.encode(mToken,"UTF-8");
             return Netget.NetConn(URL);
         }catch (Exception e){
@@ -98,7 +98,7 @@ public class Netget {
      */
     public static String getUserInfo(String mToken){
         try{
-            String URL = BaseURL+"user/info?token="+
+            String URL = BaseURL+"main/student?token="+
                     URLEncoder.encode(mToken, "UTF-8");
             return  Netget.NetConn(URL);
         }catch (Exception e){

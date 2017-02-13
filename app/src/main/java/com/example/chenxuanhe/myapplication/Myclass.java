@@ -37,7 +37,7 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
     ViewPager pager;
     ViewPagerAdapter adapter;
 
-    private List<HashMap<String,Object>>[] WeekCourse;
+    private List[] WeekCourse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
