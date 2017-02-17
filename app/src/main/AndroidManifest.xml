@@ -46,6 +46,7 @@
         <activity android:name=".Mycard" />
         <activity android:name=".Myclass" />
         <activity android:name=".MyMark"/>
+        <activity android:name=".ShowMark"/>
 
         <!-- 【必须】 信鸽receiver广播接收 -->
         <receiver

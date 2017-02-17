@@ -104,7 +104,7 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
                                 setToast(message);
                                 break;
                             case 2:
-                                setToast(""+"账号异常，请重新登录");
+                                setToast("账号异常，请重新登录！");
                                 relogin();
                                 break;
                             default:

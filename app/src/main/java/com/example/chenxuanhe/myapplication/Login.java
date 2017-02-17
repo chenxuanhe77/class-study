@@ -20,7 +20,7 @@ import android.widget.Toast;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -29,9 +29,9 @@ import butterknife.ButterKnife;
 public class Login extends AppCompatActivity {
 
 
-    @Bind(R.id.login)
+    @BindView(R.id.login)
     CardView mlogin;
-    @Bind(R.id.textView_login)
+    @BindView(R.id.textView_login)
     TextView textView_Login;
 
     @Override

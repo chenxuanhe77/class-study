@@ -251,8 +251,8 @@ public class MainActivity extends AppCompatActivity
             Info.deleteUserInfo(this);
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, Login.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Toast.makeText(MainActivity.this, "请输入您的账号密码吧~咻", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_logout) {
             System.exit(0);
