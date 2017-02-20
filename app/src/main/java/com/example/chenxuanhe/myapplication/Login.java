@@ -159,6 +159,11 @@ public class Login extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        try {
+                                            Thread.sleep(1000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
                                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
                                         Toast.makeText(Login.this, ""+token, Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent();
@@ -189,8 +194,9 @@ public class Login extends AppCompatActivity {
      * onClickLogout
      */
     public void onClickLogout(View v) {
-        System.exit(0);
+        //System.exit(0);
 
+        finish();
     }
 
     /**

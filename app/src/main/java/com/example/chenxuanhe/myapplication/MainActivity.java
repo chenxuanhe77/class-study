@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 
         MobAPI.initSDK(this, APPKEY);
 
-        StatusBarCompat.translucentStatusBar(MainActivity.this,true);
+        StatusBarCompat.translucentStatusBar(MainActivity.this, true);
 
         //腾讯信鸽推送
         Context context = getApplicationContext();
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case newTime:
                     long time = System.currentTimeMillis();
                     Date date = new Date(time);
@@ -188,18 +189,23 @@ public class MainActivity extends AppCompatActivity
                 getInfo(loginInfo.get("mToken"));
                 Toast.makeText(MainActivity.this, "亲，读到你的信息了呦！", Toast.LENGTH_SHORT).show();
             } else {
+                Toast.makeText(this, "token为空则显示这个~~~~", Toast.LENGTH_SHORT).show();
+                Info.deleteUserInfo(this);
                 doIntent(Login.class);
                 finish();
             }
         } else {
             Toast.makeText(MainActivity.this, "未读取到任何信息，请重新登录喔~", Toast.LENGTH_SHORT).show();
-           // Info.deleteUserInfo(MainActivity.this);
+            // Info.deleteUserInfo(MainActivity.this);
             doIntent(Login.class);
             finish();
         }
 
     }
 
+    /**
+     * drawer侧滑栏后退按钮点击事件，关闭侧滑栏
+     */
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -248,11 +254,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.id_mysetting) {
             doIntent(Mysetting.class);
         } else if (id == R.id.nav_logoff) {
-            Info.deleteUserInfo(this);
+          //  Info.deleteUserInfo(this);
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, Login.class);
-            startActivity(intent);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             Toast.makeText(MainActivity.this, "请输入您的账号密码吧~咻", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_logout) {
             System.exit(0);
@@ -285,7 +291,7 @@ public class MainActivity extends AppCompatActivity
      */
     public void getInfo(final String mToken) {
         View view = mNavigationView.inflateHeaderView(R.layout.nav_header_main);
-      //  final ImageView mAvatar = (ImageView) view.findViewById(R.id.id_imageView);
+        //  final ImageView mAvatar = (ImageView) view.findViewById(R.id.id_imageView);
         final TextView mId = (TextView) view.findViewById(R.id.id_id);
         final TextView mName = (TextView) view.findViewById(R.id.id_name);
 
@@ -302,7 +308,7 @@ public class MainActivity extends AppCompatActivity
             new Thread() {
                 public void run() {
                     final String result = Netget.getUserInfo(mToken);
-                    Log.d("AAA","adadadadadada");
+                    Log.d("AAA", "adadadadadada");
                     if (result != null) {
                         try {
                             JSONTokener jsonTokener = new JSONTokener(result);
@@ -311,7 +317,7 @@ public class MainActivity extends AppCompatActivity
                             if (jsonObject.getInt("error") == 0) {
                                 JSONObject outData = jsonObject.getJSONObject("data");//获得外层data
                                 JSONArray date = outData.getJSONArray("data");
-                                for(int i = 0;i<date.length();i++){
+                                for (int i = 0; i < date.length(); i++) {
                                     JSONObject data = date.getJSONObject(i);
                                     String name = data.getString("name");
                                     String college = data.getString("college");
@@ -321,14 +327,14 @@ public class MainActivity extends AppCompatActivity
 
                                     boolean isSaveSuccess = Info.saveUserInfo(MainActivity.this, name,
                                             college, major, city, id);
-                                    if (isSaveSuccess){
+                                    if (isSaveSuccess) {
                                         /**返回主线程*/
 
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 Map<String, String> userinfo = Info.getUserInfo(MainActivity.this);
-                                           //     mAvatar.setImageBitmap(bitmap);
+                                                //     mAvatar.setImageBitmap(bitmap);
                                                 mId.setText(userinfo.get("infoId"));
                                                 mName.setText(userinfo.get("infoName"));
                                             }
@@ -342,18 +348,18 @@ public class MainActivity extends AppCompatActivity
                                         });
                                     }
                                 }
-                             //   JSONObject object = new JSONObject(result);
-                            //    String infoAvatar = object.getString("avatar");
-                            //    String infoID = object.getString("xuehao");
-                           //     String infoQQ = object.getString("QQ");
-                             //   String infoTell = object.getString("tel");
-                              //  String infoName = object.getString("name");
-                           //     byte[] Avatar = Netget.getUserAvatar(infoAvatar);
-                            //    final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar, 0, Avatar.length);
+                                //   JSONObject object = new JSONObject(result);
+                                //    String infoAvatar = object.getString("avatar");
+                                //    String infoID = object.getString("xuehao");
+                                //     String infoQQ = object.getString("QQ");
+                                //   String infoTell = object.getString("tel");
+                                //  String infoName = object.getString("name");
+                                //     byte[] Avatar = Netget.getUserAvatar(infoAvatar);
+                                //    final Bitmap bitmap = BitmapFactory.decodeByteArray(Avatar, 0, Avatar.length);
 
-                            }else if(jsonObject.getInt("error")==1){
+                            } else if (jsonObject.getInt("error") == 1) {
                                 doIntent(Login.class);
-                            }else if(jsonObject.getInt("error")==2){
+                            } else if (jsonObject.getInt("error") == 2) {
                                 doIntent(Login.class);
                             }
                         } catch (Exception e) {
@@ -506,6 +512,43 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             // ignore
         }
+    }
+
+
+    /**
+     * 连续点击两次，退出程序
+     * @param keyCode
+     * @param event
+     * @return
+     */
+
+    long secondTime = 0;
+    long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+            if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+
+                secondTime = System.currentTimeMillis();
+
+                if (secondTime - exitTime > 2000) {
+                    Toast.makeText(this, "请再一次点击按钮退出~", Toast.LENGTH_SHORT).show();
+                    exitTime = secondTime;
+                    Log.d("ASDASD", "请连续点击看两次退出程序");
+                } else {
+                    Log.d("ASDASD", "程序已经退出");
+                    finish();
+                    System.exit(0);
+
+                }
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }
