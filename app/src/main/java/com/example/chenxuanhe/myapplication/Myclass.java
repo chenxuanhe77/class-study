@@ -136,7 +136,7 @@ public class Myclass extends AppCompatActivity implements MaterialTabListener {
             for(int i = 1; i <= 7 ;i ++){
                 WeekCourse[i -1] = new ArrayList<>();
                 JSONObject day = data.getJSONObject("" + i);
-                List<HashMap<String,Object>> DayClass = new ArrayList<>();
+                List<HashMap  <String,Object>> DayClass = new ArrayList<>();
                 for(int  n=1;n <=5;n ++){
                     JSONArray lesson = day.getJSONArray(""+n);
 

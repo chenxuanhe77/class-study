@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;
@@ -34,6 +35,11 @@ public class MyMark extends AppCompatActivity {
     private static String mark;
     private static String mode;
     private static String credit;
+
+    private String NoMark;
+    private String NoMode;
+    private String NoCourse;
+    private String NoCredit;
 
     private ProgressDialog dialog;
 
@@ -142,7 +148,7 @@ public class MyMark extends AppCompatActivity {
         String termtime = "2013-2014-1学期 ";
         Intent intent = new Intent(MyMark.this, ShowMark.class);
         intent.putExtra("markInfo", aaa);
-        intent.putExtra("termtime",termtime);
+        intent.putExtra("termtime", termtime);
         startActivity(intent);
     }
 
@@ -175,7 +181,7 @@ public class MyMark extends AppCompatActivity {
         String termtime = "2013-2014-2学期";
         Intent intent = new Intent(MyMark.this, ShowMark.class);
         intent.putExtra("markInfo", aaa);
-        intent.putExtra("termtime",termtime);
+        intent.putExtra("termtime", termtime);
         startActivity(intent);
     }
 
@@ -208,7 +214,7 @@ public class MyMark extends AppCompatActivity {
         String termtime = "2014-2015-1学期";
         Intent intent = new Intent(MyMark.this, ShowMark.class);
         intent.putExtra("markInfo", aaa);
-        intent.putExtra("termtime",termtime);
+        intent.putExtra("termtime", termtime);
         startActivity(intent);
     }
 
@@ -241,7 +247,7 @@ public class MyMark extends AppCompatActivity {
         String termtime = "2014-2015-2学期";
         Intent intent = new Intent(MyMark.this, ShowMark.class);
         intent.putExtra("markInfo", aaa);
-        intent.putExtra("termtime",termtime);
+        intent.putExtra("termtime", termtime);
         startActivity(intent);
     }
 
@@ -274,7 +280,7 @@ public class MyMark extends AppCompatActivity {
         String termtime = "2015-2016-1学期";
         Intent intent = new Intent(MyMark.this, ShowMark.class);
         intent.putExtra("markInfo", aaa);
-        intent.putExtra("termtime",termtime);
+        intent.putExtra("termtime", termtime);
         startActivity(intent);
     }
 
@@ -307,7 +313,7 @@ public class MyMark extends AppCompatActivity {
         String termtime = "2015-2016-2学期";
         Intent intent = new Intent(MyMark.this, ShowMark.class);
         intent.putExtra("markInfo", aaa);
-        intent.putExtra("termtime",termtime);
+        intent.putExtra("termtime", termtime);
         startActivity(intent);
     }
 
@@ -340,7 +346,7 @@ public class MyMark extends AppCompatActivity {
         String termtime = "2016-2017-1学期";
         Intent intent = new Intent(MyMark.this, ShowMark.class);
         intent.putExtra("markInfo", aaa);
-        intent.putExtra("termtime",termtime);
+        intent.putExtra("termtime", termtime);
         startActivity(intent);
     }
 
@@ -373,7 +379,108 @@ public class MyMark extends AppCompatActivity {
         String termtime = "2016-2017-2学期";
         Intent intent = new Intent(MyMark.this, ShowMark.class);
         intent.putExtra("markInfo", aaa);
-        intent.putExtra("termtime",termtime);
+        intent.putExtra("termtime", termtime);
+        startActivity(intent);
+    }
+
+    public void failedTerm(View view) {
+        ArrayList<MarkSerializable> list = new ArrayList<>();
+        try {
+            JSONTokener JS = new JSONTokener(termMark);
+            JSONObject data = (JSONObject) JS.nextValue();
+            JSONArray oneTerm = data.getJSONArray("2013-2014-1");
+            JSONArray twoTerm = data.getJSONArray("2013-2014-2");
+            JSONArray threeTerm = data.getJSONArray("2014-2015-1");
+            JSONArray fourTerm = data.getJSONArray("2014-2015-2");
+            JSONArray fiveTerm = data.getJSONArray("2015-2016-1");
+            JSONArray sixTerm = data.getJSONArray("2015-2016-2");
+            JSONArray sevenTerm = data.getJSONArray("2016-2017-1");
+            //JSONArray eightTerm = data.getJSONArray("2016-2017-2");
+            List<JSONArray> a = new ArrayList<>();
+            a.add(oneTerm);
+            a.add(twoTerm);
+            a.add(threeTerm);
+            a.add(fourTerm);
+            a.add(fiveTerm);
+            a.add(sixTerm);
+            a.add(sevenTerm);
+            //a.add(eightTerm);
+            try {
+                for (int i = 0; i < a.size() - 1; i++) {
+                    JSONArray everyTerm = a.get(i);
+                    for (int m = 0; m < everyTerm.length(); m++) {
+                        JSONObject abc = everyTerm.getJSONObject(m);
+                        NoMark = abc.getString("mark");
+                        NoCourse = abc.getString("course");
+                        NoMode = abc.getString("mode");
+                        NoCredit = abc.getString("credit");
+                        try {
+                            MarkSerializable marksz = new MarkSerializable();
+                            if (NoMode.equals("等级制")) {
+                                if (NoMark.equals("不及格")) {
+                                    Log.d("BJG", "不及格科目" + NoMark + NoCourse + NoCredit + NoMode);
+
+                                    marksz.setCourse(NoCourse);
+                                    marksz.setMark(NoMark);
+                                    marksz.setMode(NoMode);
+                                    marksz.setCredit(NoCredit);
+
+                                    list.add(marksz);
+                                }
+                                /**
+                                 * 这段代码检测挂科科目是否经过补考过关。
+                                 */
+                           /*     else if(NoMark.equals("及格")||NoMark.equals("优")||NoMark.equals("良")
+                                        ||NoMark.equals("中")){
+                                    for (int x = 0; x<list.size();x++){
+                                        if(list.get(x).getCourse().equals(NoCourse)){
+                                            list.remove(x);
+                                        }
+                                    }
+                                }*/
+
+                            } else if (NoMode.equals("分数制")) {
+                                int marks = Integer.parseInt(NoMark);
+                                if (marks < 60) {
+                                    Log.d("BJG", "不及格的科目:" + NoMark + NoCourse + NoCredit + NoMode);
+                                    // MarkSerializable marksz = new MarkSerializable();
+                                    marksz.setCourse(NoCourse);
+                                    marksz.setMark(NoMark);
+                                    marksz.setMode(NoMode);
+                                    marksz.setCredit(NoCredit);
+
+                                    list.add(marksz);
+                                }
+                                /**
+                                 *这段代码检测是否存在挂科但是补考过了的。
+                                 */
+                               /*  else if (marks >= 60) {
+                                 for (int n = 0; n < list.size() ; n++) {
+                                 if (list.get(n).getCourse().equals(NoCourse)) {
+                                 Log.d("QWER", "已经补考过关的是:" + list.get(n).getCourse()+NoMark);
+                                 list.remove(n);
+                                 }
+
+                                 }
+                                 }*/
+
+                            }
+                        } catch (NumberFormatException e) {
+                            Log.d("BJG", "String转换int发生异常");
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } catch (IndexOutOfBoundsException e) {
+                Log.d("BJG", "这是倒数第二个trycatch块");
+                e.printStackTrace();
+            }
+        } catch (JSONException e) {
+            Log.d("BJG", "这是最外层的try catch块");
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(MyMark.this, FailedActivity.class);
+        intent.putExtra("NoMarkInfo", list);
         startActivity(intent);
     }
 }

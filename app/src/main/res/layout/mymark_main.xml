@@ -6,9 +6,6 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
-        android:clickable="true"
-        android:onClick="oneTerm"
-        android:foreground="?android:attr/selectableItemBackground"
         android:id="@+id/one"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -16,6 +13,9 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="oneTerm"
         app:cardBackgroundColor="@color/lightblue"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -28,7 +28,6 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:onClick="twoTerm"
         android:id="@+id/two"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -36,6 +35,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:onClick="twoTerm"
         app:cardBackgroundColor="@color/lightblue"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -48,7 +48,6 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:onClick="threeTerm"
         android:id="@+id/three"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -56,6 +55,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:onClick="threeTerm"
         app:cardBackgroundColor="@color/lightblue"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -68,7 +68,6 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:onClick="fourTerm"
         android:id="@+id/four"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -76,6 +75,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:onClick="fourTerm"
         app:cardBackgroundColor="@color/lightblue"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -88,7 +88,6 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:onClick="fiveTerm"
         android:id="@+id/five"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -96,6 +95,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:onClick="fiveTerm"
         app:cardBackgroundColor="@color/lightblue"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -108,7 +108,6 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:onClick="sixTerm"
         android:id="@+id/six"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -116,6 +115,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:onClick="sixTerm"
         app:cardBackgroundColor="@color/lightblue"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -128,7 +128,6 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:onClick="sevenTerm"
         android:id="@+id/seven"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -136,6 +135,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:onClick="sevenTerm"
         app:cardBackgroundColor="@color/lightblue"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -148,7 +148,6 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:onClick="eightTerm"
         android:id="@+id/eight"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -156,6 +155,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:onClick="eightTerm"
         app:cardBackgroundColor="@color/lightblue"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -165,6 +165,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="2016-2017-2" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/failed_term"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:onClick="failedTerm"
+        app:cardBackgroundColor="@color/lightblue"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="挂科相关信息" />
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

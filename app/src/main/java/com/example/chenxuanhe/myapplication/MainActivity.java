@@ -477,6 +477,8 @@ public class MainActivity extends AppCompatActivity
                 case "霾":
                     mbjtu.setImageResource(R.drawable.mai);
                     break;
+                case "雷阵雨":
+                    mbjtu.setImageResource(R.drawable.zhenyu);
                 default:
                     break;
             }
