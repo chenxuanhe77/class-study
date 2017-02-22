@@ -45,9 +45,9 @@
         <activity android:name=".MyInfo" />
         <activity android:name=".Mycard" />
         <activity android:name=".Myclass" />
-        <activity android:name=".MyMark"/>
-        <activity android:name=".ShowMark"/>
-        <activity android:name=".FailedActivity"/>
+        <activity android:name=".MyMark" />
+        <activity android:name=".ShowMark" />
+        <activity android:name=".FailedActivity" />
 
         <!-- 【必须】 信鸽receiver广播接收 -->
         <receiver
@@ -102,6 +102,10 @@
             android:name="XG_V2_ACCESS_KEY"
             android:value="AL612T24ZYXZ" />
 
+        <service
+            android:name=".MyMarkService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.id_mysetting) {
             doIntent(Mysetting.class);
         } else if (id == R.id.nav_logoff) {
-          //  Info.deleteUserInfo(this);
+            //  Info.deleteUserInfo(this);
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -299,6 +299,11 @@ public class MainActivity extends AppCompatActivity
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isAvailable()) {
             Toast.makeText(getApplicationContext(), "网络不可用~", Toast.LENGTH_SHORT).show();
+            Map<String, String> map = Info.getUserInfo(MainActivity.this);
+            String name = map.get("infoName");
+            String id = map.get("infoId");
+            mId.setText(id);
+            mName.setText(name);
         } else {
 
             /**
@@ -519,6 +524,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * 连续点击两次，退出程序
+     *
      * @param keyCode
      * @param event
      * @return

@@ -5,7 +5,10 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -45,8 +48,8 @@ public class Mycard extends AppCompatActivity {
     private ListView card_Listview;
     private ProgressDialog mDialog;
     private SwipeRefreshLayout mswipeLayout;
-    private HashMap<String,Object> CardInfo;
-    private List<HashMap<String,Object>> CardInfos;
+    private HashMap<String, Object> CardInfo;
+    private List<HashMap<String, Object>> CardInfos;
 
     private FrameLayout bigFrameLayout;
     private FrameLayout FrameLayout1;
@@ -62,7 +65,7 @@ public class Mycard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mycard_main);
 
-    //    a.add("0");//List从0开始，随机数不包括12，所以随机数12以内，0-11，为12个随机数，对于list数据
+        //    a.add("0");//List从0开始，随机数不包括12，所以随机数12以内，0-11，为12个随机数，对于list数据
         a.add("今天运气无可阻挡，好运值爆棚呦！");
         a.add("多注意异性，说不定桃花就来了！");
         a.add("今天有笔横财要发，嚯嚯！");
@@ -81,24 +84,24 @@ public class Mycard extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        card_Avatar = (ImageView)findViewById(R.id.card_Avatar);
+        card_Avatar = (ImageView) findViewById(R.id.card_Avatar);
         card_Status = (TextView) this.findViewById(R.id.card_Status);
-        card_Id = (TextView)this.findViewById(R.id.card_Id);
+        card_Id = (TextView) this.findViewById(R.id.card_Id);
         card_Name = (TextView) findViewById(R.id.card_Name);
-        card_Time =  (TextView) this.findViewById(R.id.card_Time);
-        card_Banlance = (TextView)findViewById(R.id.card_Balance);
-        card_back_massage = (TextView)this.findViewById(R.id.card_back_message);
-     //   card_Listview = (ListView) findViewById(R.id.card_Listview);
+        card_Time = (TextView) this.findViewById(R.id.card_Time);
+        card_Banlance = (TextView) findViewById(R.id.card_Balance);
+        card_back_massage = (TextView) this.findViewById(R.id.card_back_message);
+        //   card_Listview = (ListView) findViewById(R.id.card_Listview);
         mswipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
 
         bigFrameLayout = (FrameLayout) this.findViewById(R.id.main_fl_container);
-        FrameLayout1 = (FrameLayout)this.findViewById(R.id.main_fl_card_back);
-        FrameLayout2 = (FrameLayout)this.findViewById(R.id.main_fl_card_front);
+        FrameLayout1 = (FrameLayout) this.findViewById(R.id.main_fl_card_back);
+        FrameLayout2 = (FrameLayout) this.findViewById(R.id.main_fl_card_front);
 
         //initAvatar();
 
 
-        final Map<String,String> getToken = Info.getLoginInfo(Mycard.this);
+        final Map<String, String> getToken = Info.getLoginInfo(Mycard.this);
         getInfo(getToken.get("mToken"));
 
 
@@ -134,12 +137,14 @@ public class Mycard extends AppCompatActivity {
             public void onRefresh() {
                 getInfo(getToken.get("mToken"));
                 mswipeLayout.setRefreshing(false);    // 设置刷新加载的icon是否继续显示 那必须为false啦。
-            }});
-        mswipeLayout.setColorSchemeResources(R.color.yellow,R.color.red,R.color.blue);//下拉icon三色变换
+            }
+        });
+        mswipeLayout.setColorSchemeResources(R.color.yellow, R.color.red, R.color.blue);//下拉icon三色变换
 
         setAnimation();//设置动画
         setCameraDistance();//设置镜头距离，在这里不是太懂
     }
+
     private void setAnimation() {
         //mLeftInSet是左边进入的动画
         mLeftInSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.anim_in);
@@ -166,16 +171,18 @@ public class Mycard extends AppCompatActivity {
         });
 
     }
+
     //一直不是很懂的设置镜头距离，
 //帖子上的注释写着：改变视角距离，贴近屏幕
     private void setCameraDistance() {
         int distance = 16000;
-        float scale = getResources().getDisplayMetrics().density*distance;
+        float scale = getResources().getDisplayMetrics().density * distance;
         FrameLayout1.setCameraDistance(scale);//设置距离
         FrameLayout2.setCameraDistance(scale);//设置距离
     }
-    public void flipCard(View view){
-        if(!mIsShowBack){
+
+    public void flipCard(View view) {
+        if (!mIsShowBack) {
             mRightOutSet.setTarget(FrameLayout2);
             mLeftInSet.setTarget(FrameLayout1);
             mRightOutSet.start();
@@ -186,7 +193,7 @@ public class Mycard extends AppCompatActivity {
             card_back_massage.setText(a.get(suijishu));
 
 
-        }else {
+        } else {
             mRightOutSet.setTarget(FrameLayout1);
             mLeftInSet.setTarget(FrameLayout2);
             mRightOutSet.start();
@@ -201,29 +208,34 @@ public class Mycard extends AppCompatActivity {
      * 返回error=0无错误
      * 返回error=1有错误
      * 返回error=2   token 有误 则重新登录
-     * */
-    public void getInfo(final String mToken){
-        mDialog = ProgressDialog.show(Mycard.this,"","加载中，请稍候...");
-        new Thread(){
-            @Override
-            public void run(){
-                final String result = Netget.getCardInfo(mToken);
-                if(result != null){
-                    try{
+     */
+    public void getInfo(final String mToken) {
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isAvailable()) {
+            Toast.makeText(this, "当前网络不可用，数据未更新处理！仍可测试运气呦！", Toast.LENGTH_SHORT).show();
+        } else {
+            mDialog = ProgressDialog.show(Mycard.this, "", "加载中，请稍候...");
+            new Thread() {
+                @Override
+                public void run() {
+                    final String result = Netget.getCardInfo(mToken);
+                    if (result != null) {
+                        try {
 
-                        JSONObject jsonObject = new JSONObject(result);
-                        int error = jsonObject.getInt("error");
-                        String message = jsonObject.getString("message");
-                        switch (error){
-                            case 0:
-                                JSONObject jsb = jsonObject.getJSONObject("data");
-                                JSONObject info = jsb.getJSONObject("info");
+                            JSONObject jsonObject = new JSONObject(result);
+                            int error = jsonObject.getInt("error");
+                            String message = jsonObject.getString("message");
+                            switch (error) {
+                                case 0:
+                                    JSONObject jsb = jsonObject.getJSONObject("data");
+                                    JSONObject info = jsb.getJSONObject("info");
 
-                                final String cardName = info.getString("name");
-                                final String cardBalance = info.getString("balance");
-                                final String cardTime = info.getString("startDate");
-                                final String cardStatus = info.getString("status");
-                                final String cardId = info.getString("cardId");
+                                    final String cardName = info.getString("name");
+                                    final String cardBalance = info.getString("balance");
+                                    final String cardTime = info.getString("startDate");
+                                    final String cardStatus = info.getString("status");
+                                    final String cardId = info.getString("cardId");
                            /*     JSONArray jsonArray =jsb.getJSONArray("data");
 
                                 CardInfos = new ArrayList<>();
@@ -237,35 +249,38 @@ public class Mycard extends AppCompatActivity {
                                     CardInfo.put("Time", "时间" + Time);
                                     CardInfos.add(CardInfo);
                                 }*/
-                                initDataCard(cardName,cardBalance,cardTime,cardStatus,cardId);
-                                mDialog.dismiss();
-                                break;
-                            case 1:
-                                setToast(message);
-                                break;
-                            case 2:
-                                setToast("登录数据出错，请重新登录~~");
-                             //   Info.deleteUserInfo(Mycard.this);//删除并重新登录
-                                final Intent intent =getPackageManager()
-                                        .getLaunchIntentForPackage(getPackageName());//返回入口 就是最初的Activity
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//重新开启Activity并在该栈而不创新栈
-                                startActivity(intent);
-                                break;
-                            default:
-                                break;
+                                    initDataCard(cardName, cardBalance, cardTime, cardStatus, cardId);
+                                    mDialog.dismiss();
+                                    break;
+                                case 1:
+                                    setToast(message);
+                                    break;
+                                case 2:
+                                    setToast("登录数据出错，请重新登录~~");
+                                    //   Info.deleteUserInfo(Mycard.this);//删除并重新登录
+                                    final Intent intent = getPackageManager()
+                                            .getLaunchIntentForPackage(getPackageName());//返回入口 就是最初的Activity
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//重新开启Activity并在该栈而不创新栈
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    }catch (Exception e){
-                        e.printStackTrace();
                     }
+
                 }
-            }
-        }.start();
+            }.start();
+        }
     }
 
 
     /**
      * 不能再线程用Toast
      * setToast方法用于上面调用
+     *
      * @param message
      */
     public void setToast(final String message) {
@@ -283,18 +298,18 @@ public class Mycard extends AppCompatActivity {
      * 还有listView上面的信息
      */
     public void initDataCard(final String cardName, final String cardBalance,
-                             final String cardTime,final String status,final String cardId){
+                             final String cardTime, final String status, final String cardId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-        //        SimpleAdapter simpleAdapter = new SimpleAdapter(Mycard.this, CardInfos, R.layout.item_card,
-         //               new String[]{"Trade", "Time"}, new int[]{R.id.card_Trade, R.id.card_Time});
+                //        SimpleAdapter simpleAdapter = new SimpleAdapter(Mycard.this, CardInfos, R.layout.item_card,
+                //               new String[]{"Trade", "Time"}, new int[]{R.id.card_Trade, R.id.card_Time});
                 card_Name.setText(cardName);
                 card_Banlance.setText(cardBalance);
                 card_Time.setText(cardTime);
                 card_Status.setText(status);
                 card_Id.setText(cardId);
-        //        card_Listview.setAdapter(simpleAdapter);
+                //        card_Listview.setAdapter(simpleAdapter);
             }
         });
     }
@@ -329,10 +344,9 @@ public class Mycard extends AppCompatActivity {
 
     /**
      * 用于actionbar返回页面功能
-     *
-     * */
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+     */
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 break;

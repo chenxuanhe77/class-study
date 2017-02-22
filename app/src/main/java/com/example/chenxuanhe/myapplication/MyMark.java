@@ -1,7 +1,10 @@
 package com.example.chenxuanhe.myapplication;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -56,51 +59,64 @@ public class MyMark extends AppCompatActivity {
 
     private void getMarkInfo(final String mtoken) {
         dialog = ProgressDialog.show(MyMark.this, "", "加载中~~");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder().
-                            url("http://api.13550101.com/main/score?token=" + mtoken).build();
-                    Response response = client.newCall(request).execute();
-                    if (response != null) {
-                        String result = response.body().string();
-                        try {
-                            JSONTokener results = new JSONTokener(result);
-                            JSONObject ddaa = (JSONObject) results.nextValue();
-                            String message = ddaa.getString("message");
-                            int error = ddaa.getInt("error");
-                            switch (error) {
-                                case 0:
-                                    JSONObject ddaattaa = ddaa.getJSONObject("data");
-                                    JSONObject data = ddaattaa.getJSONObject("data");
-                                    Log.d("fuck", "" + data);//OK了
-                                    termMark = data.toString().trim();
-                                    dialog.dismiss();
-                                    break;
-                                case 1:
-                                    setToast(message);
-                                    break;
-                                case 2:
-                                    finish();
-                                    doIntent(Login.class);
-                                    setToast("信息有误，请重新登陆验证呦~");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
 
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isAvailable()) {
+            Toast.makeText(this, "当前网络不可用，数据未更新处理！", Toast.LENGTH_SHORT).show();
+            Map<String ,String> termMarks = Info.getMarkInfo(MyMark.this);
+            termMark = termMarks.get("MarkInfo");
+            dialog.dismiss();
+        } else {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder().
+                                url("http://api.13550101.com/main/score?token=" + mtoken).build();
+                        Response response = client.newCall(request).execute();
+                        if (response != null) {
+                            String result = response.body().string();
+                            try {
+                                JSONTokener results = new JSONTokener(result);
+                                JSONObject ddaa = (JSONObject) results.nextValue();
+                                String message = ddaa.getString("message");
+                                int error = ddaa.getInt("error");
+                                switch (error) {
+                                    case 0:
+                                        JSONObject ddaattaa = ddaa.getJSONObject("data");
+                                        JSONObject data = ddaattaa.getJSONObject("data");
+                                        Log.d("fuck", "" + data);//OK了
+                                        termMark = data.toString().trim();
+                                        Info.saveMarkInfo(MyMark.this, termMark);
+                                        dialog.dismiss();
+                                        break;
+                                    case 1:
+                                        setToast(message);
+                                        break;
+                                    case 2:
+                                        finish();
+                                        doIntent(Login.class);
+                                        setToast("信息有误，请重新登陆验证呦~");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
+    
 
     private void setToast(final String message) {
         runOnUiThread(new Runnable() {
@@ -416,6 +432,7 @@ public class MyMark extends AppCompatActivity {
                         NoCredit = abc.getString("credit");
                         try {
                             MarkSerializable marksz = new MarkSerializable();
+
                             if (NoMode.equals("等级制")) {
                                 if (NoMark.equals("不及格")) {
                                     Log.d("BJG", "不及格科目" + NoMark + NoCourse + NoCredit + NoMode);
@@ -426,6 +443,8 @@ public class MyMark extends AppCompatActivity {
                                     marksz.setCredit(NoCredit);
 
                                     list.add(marksz);
+
+
                                 }
                                 /**
                                  * 这段代码检测挂科科目是否经过补考过关。
@@ -450,6 +469,22 @@ public class MyMark extends AppCompatActivity {
                                     marksz.setCredit(NoCredit);
 
                                     list.add(marksz);
+
+                                    /**
+                                     *上面也应该有一样的通知栏代码，这样才能筛选，但是现将通知栏代码移动到
+                                     * 服务里面去，在服务里面进行显示挂科信息的通知栏
+                                     */
+
+                                    //      NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                               /*     Notification notification = new NotificationCompat.Builder(this)
+                                            .setContentTitle("目前还未及格，请加油复习呦")
+                                            .setContentText(NoCourse)
+                                            .setWhen(System.currentTimeMillis())
+                                            .setSmallIcon(R.drawable.mao)
+                                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.mao))
+                                            .setAutoCancel(true)
+                                            .build();
+                                    manager.notify(m, notification);*/
                                 }
                                 /**
                                  *这段代码检测是否存在挂科但是补考过了的。
@@ -465,12 +500,14 @@ public class MyMark extends AppCompatActivity {
                                  }*/
 
                             }
+
                         } catch (NumberFormatException e) {
                             Log.d("BJG", "String转换int发生异常");
                             e.printStackTrace();
                         }
                     }
                 }
+
             } catch (IndexOutOfBoundsException e) {
                 Log.d("BJG", "这是倒数第二个trycatch块");
                 e.printStackTrace();
@@ -482,5 +519,11 @@ public class MyMark extends AppCompatActivity {
         Intent intent = new Intent(MyMark.this, FailedActivity.class);
         intent.putExtra("NoMarkInfo", list);
         startActivity(intent);
+        Intent serviceIntent = new Intent(this, MyMarkService.class);
+        serviceIntent.putExtra("Mark_failed", list);
+        startService(serviceIntent);
+        Log.d("Test", "服务已经开启");
+
+
     }
 }
